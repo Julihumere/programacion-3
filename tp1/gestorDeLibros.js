@@ -29,19 +29,28 @@ const libros = [
 
 // 2.1
 console.log("--------------Ejercicio 2.1------------------");
-console.log(libros.length);
+function cantidadDeLibros(libros) {
+  return libros.length;
+}
+console.log(cantidadDeLibros(libros));
 console.log("----------------------------------------------");
 
 // 2.2
 console.log("--------------Ejercicio 2.2------------------");
-console.log(libros[1].nombre);
-console.log(libros[3].nombre);
+function nombreDeLibro(libros, indice) {
+  return libros[indice].nombre;
+}
+console.log(nombreDeLibro(libros, 1));
+console.log(nombreDeLibro(libros, 3));
 console.log("----------------------------------------------");
 
 // 3.1
 console.log("--------------Ejercicio 3.1------------------");
-for (const libro of libros) {
-  console.log(`El libro ${libro.nombre} tiene un precio de $${libro.precio}`);
+function precioDeLibro(libros) {
+  for (const libro of libros) {
+    console.log(`El libro ${libro.nombre} tiene un precio de $${libro.precio}`);
+  }
 }
+precioDeLibro(libros);
 
 console.log("----------------------------------------------");
