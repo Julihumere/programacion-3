@@ -52,5 +52,70 @@ function precioDeLibro(libros) {
   }
 }
 precioDeLibro(libros);
+console.log("----------------------------------------------");
 
+// 3.2
+console.log("--------------Ejercicio 3.2------------------");
+function precioDeLibroForEach(libros) {
+  libros.forEach(libro => {
+    console.log(`Producto: ${libro.nombre}, Precio: $${libro.precio}`);
+  });
+}
+precioDeLibroForEach(libros);
+console.log("----------------------------------------------");
+
+// 4.1
+console.log("--------------Ejercicio 4.1------------------");
+function agregarElementos(libros) {
+  libros.push({
+    id: 5,
+    nombre: "Cien años de soledad",
+    precio: 2000,
+    stock: 5
+  });
+  libros.push({
+    id: 6,
+    nombre: "Don Quijote",
+    precio: 2200,
+    stock: 3
+  });
+  console.log("Se agregaron 2 libros al final del array");
+  console.log(`Nueva cantidad de libros: ${libros.length}`);
+}
+agregarElementos(libros);
+console.log("----------------------------------------------");
+
+// 4.2
+console.log("--------------Ejercicio 4.2------------------");
+function eliminarUltimo(libros) {
+  const libroEliminado = libros.pop();
+  console.log(`Se elimino el libro: ${libroEliminado.nombre}`);
+  console.log(`Nueva cantidad de libros: ${libros.length}`);
+}
+eliminarUltimo(libros);
+console.log("----------------------------------------------");
+
+// 4.3
+console.log("--------------Ejercicio 4.3------------------");
+function agregarAlInicio(libros) {
+  libros.unshift({
+    id: 0,
+    nombre: "Patrones de Diseño",
+    precio: 5000,
+    stock: 7
+  });
+  console.log("Se agrego un libro al inicio del array");
+  console.log(`Nueva cantidad de libros: ${libros.length}`);
+}
+agregarAlInicio(libros);
+console.log("----------------------------------------------");
+
+// 4.4
+console.log("--------------Ejercicio 4.4------------------");
+function eliminarPrimero(libros) {
+  const libroEliminado = libros.shift();
+  console.log(`Se elimino el libro: ${libroEliminado.nombre}`);
+  console.log(`Nueva cantidad de libros: ${libros.length}`);
+}
+eliminarPrimero(libros);
 console.log("----------------------------------------------");
