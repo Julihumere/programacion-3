@@ -7,7 +7,7 @@ Repositorio para los trabajos prácticos de la materia Programación III.
 - Humere Julio Cesar
 - Lautaro Oyuela Bida
 - Emiliano Benítez
-- Carlos Troncosso
+- Carlos Troncoso
 
 ## Estructura del repositorio
 
