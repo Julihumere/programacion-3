@@ -11,8 +11,7 @@ Repositorio para los trabajos prácticos de la materia Programación III.
 ## Estructura del repositorio
 
 - `tp1/`: Trabajo Práctico 1 (JavaScript — Arrays)
-  - `gestorDeLibros.js`: script con ejercicios sobre manejo de arrays
-  - `TP 1 javaScript.pdf`: enunciado del trabajo
+  - `gestorDeLibros.js`
 
 ## Requisitos
 
