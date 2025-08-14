@@ -119,3 +119,25 @@ function eliminarPrimero(libros) {
 }
 eliminarPrimero(libros);
 console.log("----------------------------------------------");
+
+// 4.5
+const productosConStock = libros.filter(libro => libro.stock > 0);
+console.table(productosConStock);
+console.log("----------------------------------------------");
+
+// 4.6
+const nombresProductos = libros.map(libro => libro.nombre);
+console.log(nombresProductos);
+
+// 4.7
+const idBuscado = 3; //puede ser cualquier otro
+const productoEncontrado = libros.find(libro => libro.id === idBuscado);
+if (productoEncontrado) {
+  console.table([productoEncontrado]);
+} else {
+  console.log("No existe el producto buscado");
+}
+
+// 4.8
+const productosOrdenados = [...libros].sort((a, b) => b.precio - a.precio);
+console.table(productosOrdenados);

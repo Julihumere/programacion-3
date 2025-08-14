@@ -5,7 +5,7 @@ Repositorio para los trabajos prácticos de la materia Programación III.
 ## Integrantes
 
 - Humere Julio Cesar
-- Lautaro Oyuela Bida
+- Lautaro Oyuela Bidal
 - Emiliano Benítez
 
 ## Estructura del repositorio
