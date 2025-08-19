@@ -25,3 +25,12 @@ Repositorio para los trabajos prácticos de la materia Programación III.
 ```bash
 node tp1/gestorDeLibros.js
 ```
+
+## Cómo ejecutar el TP2
+
+1. Abrí una terminal en la raíz del repositorio.
+2. Ejecutá el siguiente comando:
+
+```bash
+node tp2/apiFetch.js
+```
