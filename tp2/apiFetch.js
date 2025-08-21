@@ -156,6 +156,69 @@ const eliminarProducto = async (id) => {
 
 await eliminarProducto(1);
 
+const modificarProducto = async (id, productoActualizado) => {
+  return fetch(`${urlApi}/products/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(productoActualizado),
+  })
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(
+        "-------------------------------------------------------------"
+      );
+      console.log(`7. Modificar producto con ID: ${id} (PUT)`);
+      console.log("Producto modificado exitosamente:");
+      console.log(data);
+      return data;
+    })
+    .catch((error) =>
+      console.error(
+        `Error al modificar el producto con ID ${id}`,
+        error.message
+      )
+    );
+};
+
+await modificarProducto(1, {
+  name: "Producto actualizado",
+  price: 250,
+  description: "Nueva descripcion",
+});
+
+const agregarProductoAlArchivo = (nuevoProducto) => {
+  try {
+    const data = readFileSync("Productos.json", "utf-8");
+    const productos = JSON.parse(data);
+
+    productos.push(nuevoProducto);
+
+    writeFileSync("Productos.json", JSON.stringify(productos, null, 2));
+
+    console.log("-------------------------------------------------------------");
+    console.log("Producto agregado:");
+    console.log(nuevoProducto);
+  } catch (error) {
+    console.error("Error al agregar producto al archivo local:", error.message);
+  }
+};
+
+const productoLocal = {
+  id: 999,
+  title: "Prueba titulo",
+  price: 85000,
+  description: "Esta es una descripcion",
+  category: "Prueba",
+};
+
+agregarProductoAlArchivo(productoLocal);
+
 const eliminarProductosCarosSuperiores = (precioMax) => {
   try {
     const data = readFileSync("Productos.json", "utf-8");
