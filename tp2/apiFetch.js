@@ -1,5 +1,5 @@
-import { writeFileSync } from "fs";
-const urlApi = "https://fakestoreapi.com/";
+import { readFileSync, writeFileSync } from "fs";
+const urlApi = "https://fakestoreapi.com";
 
 const getProductos = async () => {
   return fetch(`${urlApi}/products`)
@@ -155,3 +155,24 @@ const eliminarProducto = async (id) => {
 };
 
 await eliminarProducto(1);
+
+const eliminarProductosCarosSuperiores = (precioMax) => {
+  try {
+    const data = readFileSync("Productos.json", "utf-8");
+    const productos = JSON.parse(data);
+
+    const filtrados = productos.filter((p) => Number(p.price) <= Number(precioMax));
+
+    writeFileSync("Productos.json", JSON.stringify(filtrados, null, 2));
+
+    console.log("-------------------------------------------------------------");
+    console.log(`Productos con precio mayor a ${precioMax} eliminados.`);
+    console.log("Archivo actualizado.");
+  } catch (error) {
+    console.error("Error al procesar Productos.json:", error.message);
+  }
+};
+
+// Ejemplo: eliminar productos con precio > 100 Quitar el comentario para utilizar
+//eliminarProductosCarosSuperiores(100);
+
