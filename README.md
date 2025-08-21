@@ -24,7 +24,8 @@ Repositorio para los trabajos prácticos de la materia Programación III.
 2. Ejecutá el siguiente comando:
 
 ```bash
-node tp1/gestorDeLibros.js
+cd tp1
+node gestorDeLibros.js
 ```
 
 ## Cómo ejecutar el TP2
@@ -33,5 +34,6 @@ node tp1/gestorDeLibros.js
 2. Ejecutá el siguiente comando:
 
 ```bash
-node tp2/apiFetch.js
+cd tp2
+node apiFetch.js
 ```

@@ -23,6 +23,7 @@ const getProductos = async () => {
     );
 };
 
+// Prueba 1
 await getProductos();
 
 const getProductosLimitados = async (limit) => {
@@ -63,6 +64,7 @@ const getProductosLimitados = async (limit) => {
     );
 };
 
+// Prueba 2
 await getProductosLimitados(2);
 
 const agregarProducto = async (nuevoProducto) => {
@@ -92,12 +94,14 @@ const agregarProducto = async (nuevoProducto) => {
     );
 };
 
-//Prueba
+// Prueba 3
 const productoNuevo = {
   title: "Computadora Apple MAC M4 Pro",
   price: 4000000,
-  description: "Apple Mac M4 Pro es la mejor computadora que vas a encontrar en el mercado",
-  image: "https://http2.mlstatic.com/D_NQ_NP_762067-MLA83571586133_042025-O.webp",
+  description:
+    "Apple Mac M4 Pro es la mejor computadora que vas a encontrar en el mercado",
+  image:
+    "https://http2.mlstatic.com/D_NQ_NP_762067-MLA83571586133_042025-O.webp",
   category: "electronic",
 };
 
@@ -119,13 +123,11 @@ const buscarProductoPorId = async (id) => {
       return data;
     })
     .catch((error) =>
-      console.error(
-        `Error al buscar el producto con ID ${id}`,
-        error.message
-      )
+      console.error(`Error al buscar el producto con ID ${id}`, error.message)
     );
 };
 
+// Prueba 4
 await buscarProductoPorId(1);
 
 const eliminarProducto = async (id) => {
@@ -147,13 +149,11 @@ const eliminarProducto = async (id) => {
       return data;
     })
     .catch((error) =>
-      console.error(
-        `Error al eliminar el producto con ID ${id}`,
-        error.message
-      )
+      console.error(`Error al eliminar el producto con ID ${id}`, error.message)
     );
 };
 
+// Prueba 5
 await eliminarProducto(1);
 
 const modificarProducto = async (id, productoActualizado) => {
@@ -186,6 +186,7 @@ const modificarProducto = async (id, productoActualizado) => {
     );
 };
 
+// Prueba 6
 await modificarProducto(1, {
   name: "Producto actualizado",
   price: 250,
@@ -201,7 +202,9 @@ const agregarProductoAlArchivo = (nuevoProducto) => {
 
     writeFileSync("Productos.json", JSON.stringify(productos, null, 2));
 
-    console.log("-------------------------------------------------------------");
+    console.log(
+      "-------------------------------------------------------------"
+    );
     console.log("Producto agregado:");
     console.log(nuevoProducto);
   } catch (error) {
@@ -209,6 +212,7 @@ const agregarProductoAlArchivo = (nuevoProducto) => {
   }
 };
 
+// Prueba 7
 const productoLocal = {
   id: 999,
   title: "Prueba titulo",
@@ -224,11 +228,17 @@ const eliminarProductosCarosSuperiores = (precioMax) => {
     const data = readFileSync("Productos.json", "utf-8");
     const productos = JSON.parse(data);
 
-    const filtrados = productos.filter((p) => Number(p.price) <= Number(precioMax));
+    console.log(productos);
+
+    const filtrados = productos.filter(
+      (p) => Number(p.price) <= Number(precioMax)
+    );
 
     writeFileSync("Productos.json", JSON.stringify(filtrados, null, 2));
 
-    console.log("-------------------------------------------------------------");
+    console.log(
+      "-------------------------------------------------------------"
+    );
     console.log(`Productos con precio mayor a ${precioMax} eliminados.`);
     console.log("Archivo actualizado.");
   } catch (error) {
@@ -236,6 +246,5 @@ const eliminarProductosCarosSuperiores = (precioMax) => {
   }
 };
 
-// Ejemplo: eliminar productos con precio > 100 Quitar el comentario para utilizar
-//eliminarProductosCarosSuperiores(100);
-
+// Prueba 8
+eliminarProductosCarosSuperiores(100);
