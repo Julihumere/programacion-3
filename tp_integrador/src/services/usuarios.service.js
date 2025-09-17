@@ -27,7 +27,7 @@ const crearUsuario = async (usuario) => {
     foto,
   ];
 
-  const [result] = await conexion.query(sql, params);
+  const [result] = await conexion.execute(sql, params);
 
   if (result.affectedRows === undefined) {
     throw new Error("No se pudo crear el usuario");
@@ -37,12 +37,12 @@ const crearUsuario = async (usuario) => {
 };
 
 const listarUsuarios = async () => {
-  const [rows] = await conexion.query("SELECT * FROM usuarios");
+  const [rows] = await conexion.execute("SELECT * FROM usuarios");
   return rows;
 };
 
 const iniciarSesion = async (nombre_usuario, contrasenia) => {
-  const [rows] = await conexion.query(
+  const [rows] = await conexion.execute(
     "SELECT * FROM usuarios WHERE nombre_usuario = ?",
     [nombre_usuario]
   );

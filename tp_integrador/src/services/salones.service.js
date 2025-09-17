@@ -16,7 +16,7 @@ const crearSalon = async (salon) => {
     activo,
   ];
 
-  const [result] = await conexion.query(sql, params);
+  const [result] = await conexion.execute(sql, params);
 
   if (result.affectedRows === undefined) {
     throw new Error("No se pudo crear el salon");
@@ -26,12 +26,12 @@ const crearSalon = async (salon) => {
 };
 
 const listarSalones = async () => {
-  const [rows] = await conexion.query("SELECT * FROM salones");
+  const [rows] = await conexion.execute("SELECT * FROM salones");
   return rows;
 };
 
 const obtenerSalon = async (id) => {
-  const [rows] = await conexion.query(
+  const [rows] = await conexion.execute(
     "SELECT * FROM salones WHERE salon_id = ?",
     [Number(id)]
   );
