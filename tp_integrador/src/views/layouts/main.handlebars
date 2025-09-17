@@ -1,0 +1,36 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>{{{title}}}</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="header-nav">
+        <h1 class="header-title">
+          <a class="header-title-link" href="/">Trampolín Park</a>
+        </h1>
+        <div class="header-buttons">
+          <button class="button-header">
+            <a class="button-header-link" href="/login">Iniciar sesión</a>
+          </button>
+          <button class="button-header">
+            <a class="button-header-link" href="/register">Registrarse</a>
+          </button>
+        </div>
+      </nav>
+    </header>
+    {{#if isHome}}
+      <section class="home-section">
+        <h1>{{title}}</h1>
+      </section>
+    {{else if isLogin}}
+      <section class="login-section">
+        <h1>{{title}}</h1>
+      </section>
+    {{else}}
+      {{{body}}}
+    {{/if}}
+  </body>
+</html>
