@@ -1,25 +1,24 @@
-import jwt from "jsonwebtoken";
+import passport from "passport";
 
 const validarSesion = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err) {
+      return res.status(500).json({
+        status: "error",
+        message: "Error interno del servidor",
+      });
+    }
 
-  if (!token) {
-    return res.status(401).json({
-      status: "error",
-      message: "No se proporcionó un token de autenticación",
-    });
-  }
+    if (!user) {
+      return res.status(401).json({
+        status: "error",
+        message: "Token inválido o expirado",
+      });
+    }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = decoded;
+    req.usuario = user;
     next();
-  } catch (error) {
-    return res.status(401).json({
-      status: "error",
-      message: "Token inválido",
-    });
-  }
+  })(req, res, next);
 };
 
 export { validarSesion };

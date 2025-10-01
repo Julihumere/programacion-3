@@ -5,6 +5,7 @@ import salonesRouter from "./routes/salones.routes.js";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
+import passport from "./config/passport.js";
 
 dotenv.config();
 
@@ -15,6 +16,9 @@ const hbs = expressHandlebars.create({
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
+
+// Inicializar passport
+app.use(passport.initialize());
 
 // Configuración de Handlebars
 app.engine("handlebars", hbs.engine);
