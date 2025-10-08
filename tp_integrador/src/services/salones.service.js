@@ -38,4 +38,44 @@ const obtenerSalon = async (id) => {
   return rows[0];
 };
 
-export { crearSalon, listarSalones, obtenerSalon };
+const actualizarSalon = async (id, salon) => {
+  const { titulo, direccion, latitud, longitud, capacidad, importe, activo } =
+    salon;
+
+  const sql =
+    "UPDATE salones SET titulo = ?, direccion = ?, latitud = ?, longitud = ?, capacidad = ?, importe = ?, activo = ?, modificado = NOW() WHERE salon_id = ?";
+  const params = [
+    titulo,
+    direccion,
+    latitud || null,
+    longitud || null,
+    capacidad,
+    importe,
+    activo,
+    Number(id),
+  ];
+
+  const [result] = await conexion.execute(sql, params);
+
+  if (result.affectedRows === 0) {
+    throw new Error("Salon no encontrado o no se pudo actualizar");
+  }
+
+  return result;
+};
+
+const eliminarSalon = async (id) => {
+  const sql =
+    "UPDATE salones SET activo = 0, modificado = NOW() WHERE salon_id = ?";
+  const params = [Number(id)];
+
+  const [result] = await conexion.execute(sql, params);
+
+  if (result.affectedRows === 0) {
+    throw new Error("Salon no encontrado o no se pudo eliminar");
+  }
+
+  return result;
+};
+
+export { crearSalon, listarSalones, obtenerSalon, actualizarSalon, eliminarSalon };
