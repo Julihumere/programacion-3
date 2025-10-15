@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import usuariosRouter from "./routes/usuarios.routes.js";
 import salonesRouter from "./routes/salones.routes.js";
+import serviciosRouter from "./routes/servicios.routes.js";
+import turnosRouter from "./routes/turnos.routes.js";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
@@ -34,6 +36,8 @@ app.get("/health", (_req, res) => {
 
 app.use("/usuarios", usuariosRouter);
 app.use("/salones", salonesRouter);
+app.use("/servicios", serviciosRouter);
+app.use("/turnos", turnosRouter);
 
 const port = Number(process.env.PORT || 3000);
 app.listen(port, () => {
