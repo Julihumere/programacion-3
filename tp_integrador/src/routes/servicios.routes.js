@@ -14,7 +14,7 @@ const router = Router();
 router.post("/", validarSesion, esAdmin, crearServicioController);
 router.get("/", validarSesion, listarServiciosController);
 router.get("/:id", validarSesion, obtenerServicioController);
-router.put("/:id", validarSesion, esAdmin, actualizarServicioController);
+router.patch("/:id", validarSesion, esAdmin, actualizarServicioController);
 router.delete("/:id", validarSesion, esAdmin, eliminarServicioController);
 
 export default router;

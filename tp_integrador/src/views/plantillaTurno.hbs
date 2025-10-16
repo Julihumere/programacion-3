@@ -1,0 +1,103 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>⏰ ¡Nuevo Turno Creado! - Trampolín Park</title>
+    <style type="text/css">
+      /* Estilos optimizados para email */ body { margin: 0; padding: 0;
+      min-width: 100%; font-family: Arial, Helvetica, sans-serif; font-size:
+      16px; line-height: 1.6; background: linear-gradient(135deg, #667eea 0%,
+      #764ba2 100%); -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;
+      } .email-container { max-width: 100%; margin: 0 auto; background-color:
+      #ffffff; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); } .content {
+      padding: 30px 20px; } .salon-card { background: linear-gradient(135deg,
+      #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius:
+      12px; margin-bottom: 25px; text-align: center; } .salon-title { font-size:
+      26px; margin: 0 0 10px 0; font-weight: bold; } .salon-subtitle {
+      font-size: 16px; margin: 0; opacity: 0.9; } .info-section { background:
+      linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162,
+      0.1) 100%); border-left: 5px solid #667eea; padding: 20px; margin-bottom:
+      25px; border-radius: 0 8px 8px 0; } .info-table { width: 100%;
+      border-collapse: collapse; margin-bottom: 20px; } .info-table td {
+      padding: 12px 0; border-bottom: 1px solid rgba(102, 126, 234, 0.2); }
+      .info-table td:first-child { font-weight: bold; color: #764ba2; width:
+      45%; font-size: 15px; } .info-table td:last-child { color: #333;
+      font-size: 15px; } .highlight-value { color: #667eea; font-weight: bold;
+      font-size: 18px; } .section-title { font-size: 20px; color: #764ba2;
+      margin: 0 0 20px 0; padding-bottom: 10px; border-bottom: 2px solid
+      #667eea; font-weight: bold; } .location-section { background:
+      linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162,
+      0.1) 100%); border: 1px solid #667eea; padding: 20px; border-radius: 8px;
+      margin: 20px 0; } .map-link { display: inline-block; background:
+      linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px
+      20px; text-decoration: none; border-radius: 25px; font-weight: bold;
+      margin-top: 10px; } .footer { background: linear-gradient(135deg, #764ba2,
+      #667eea); color: white; text-align: center; padding: 25px 20px; } .footer
+      p { margin: 8px 0; font-size: 14px; } .footer-title { font-size: 18px;
+      font-weight: bold; margin-bottom: 15px; } /* Responsive */ @media only
+      screen and (max-width: 600px) { .content { padding: 20px 15px; }
+      .salon-title { font-size: 22px; } .email-container { max-width: 100%; } }
+    </style>
+  </head>
+
+  <body>
+    <table
+      role="presentation"
+      cellspacing="0"
+      cellpadding="0"
+      border="0"
+      width="100%"
+    >
+      <tr>
+        <td style="padding: 20px 0;">
+          <div class="email-container">
+            <div class="content">
+              <div class="salon-card">
+                <h2 class="salon-title">🏷️ {{titulo}}</h2>
+                <p class="salon-subtitle">¡Tu nuevo turno ha sido creado!</p>
+              </div>
+
+              <div class="info-section">
+                <h3 class="section-title">⏰ Detalles del Turno</h3>
+                <table class="info-table">
+                  <tr>
+                    <td>📋 Orden:</td>
+                    <td><span class="highlight-value">{{orden}}</span></td>
+                  </tr>
+                  <tr>
+                    <td>🕐 Hora de Inicio:</td>
+                    <td><span class="highlight-value">{{hora_desde}}</span></td>
+                  </tr>
+                  <tr>
+                    <td>🕐 Hora de Fin:</td>
+                    <td><span class="highlight-value">{{hora_hasta}}</span></td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="location-section">
+                <h3 class="section-title">ℹ️ Información del Turno</h3>
+                <p><strong>📋 Turno:</strong> {{orden}}</p>
+                <p>Este turno está disponible desde las
+                  <strong>{{hora_desde}}</strong>
+                  hasta las
+                  <strong>{{hora_hasta}}</strong>.</p>
+              </div>
+
+              <!-- Footer -->
+              <div class="footer">
+                <div class="footer-title">🎪 Trampolín Park</div>
+                <p>📞 (011) 1234-5678 | 📧 info@trampolinpark.com</p>
+                <p>🌐 www.trampolinpark.com</p>
+                <p style="margin-top: 15px; opacity: 0.8;">
+                  ¿Tienes preguntas sobre los turnos? ¡Estamos aquí para
+                  ayudarte!
+                </p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

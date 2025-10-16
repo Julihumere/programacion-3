@@ -5,17 +5,9 @@ import {
   actualizarServicio,
   eliminarServicio,
 } from "../services/servicios.service.js";
-import { validarServicioBody } from "../utils/validador.js";
 
 const crearServicioController = async (req, res) => {
   try {
-    const validacion = validarServicioBody(req.body);
-    if (!validacion.ok) {
-      return res
-        .status(400)
-        .json({ status: "error", message: validacion.message });
-    }
-
     const servicio = await crearServicio(req.body);
     if (!servicio) {
       throw new Error("No se pudo crear el servicio");
@@ -70,21 +62,17 @@ const obtenerServicioController = async (req, res) => {
 
 const actualizarServicioController = async (req, res) => {
   try {
-    const validacion = validarServicioBody(req.body);
-    if (!validacion.ok) {
-      return res
-        .status(400)
-        .json({ status: "error", message: validacion.message });
-    }
-
     const servicio = await actualizarServicio(req.params.id, req.body);
-    if (!servicio) {
-      throw new Error("No se pudo actualizar el servicio");
-    }
+    if (!servicio)
+      return res.status(404).json({
+        status: "error",
+        message: "El servicio no existe",
+      });
 
-    return res
-      .status(200)
-      .json({ status: "success", message: "Servicio actualizado correctamente" });
+    return res.status(200).json({
+      status: "success",
+      message: "Servicio actualizado correctamente",
+    });
   } catch (error) {
     console.error("Error UPDATE en /servicios:", error);
     return res.status(500).json({

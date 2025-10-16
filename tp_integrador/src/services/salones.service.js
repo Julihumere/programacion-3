@@ -1,4 +1,6 @@
 import { conexion } from "../config/db.js";
+import { enviarNotificacion } from "../utils/envioNotificacion.js";
+import { validarSalonBody } from "../utils/validador.js";
 
 const crearSalon = async (salon) => {
   const { titulo, direccion, latitud, longitud, capacidad, importe, activo } =
@@ -22,6 +24,19 @@ const crearSalon = async (salon) => {
     throw new Error("No se pudo crear el salon");
   }
 
+  await enviarNotificacion(
+    {
+      titulo: `Nuevo Salón de Fiestas: ${titulo}`,
+      direccion: direccion,
+      latitud: latitud,
+      longitud: longitud,
+      capacidad: capacidad,
+      importe: importe,
+      destinatario: process.env.EMAIL_DESTINATARIO,
+    },
+    1
+  );
+
   return result;
 };
 
@@ -39,21 +54,23 @@ const obtenerSalon = async (id) => {
 };
 
 const actualizarSalon = async (id, salon) => {
-  const { titulo, direccion, latitud, longitud, capacidad, importe, activo } =
-    salon;
+  const existeSalon = await obtenerSalon(id);
+  if (!existeSalon) return null;
 
-  const sql =
-    "UPDATE salones SET titulo = ?, direccion = ?, latitud = ?, longitud = ?, capacidad = ?, importe = ?, activo = ?, modificado = NOW() WHERE salon_id = ?";
-  const params = [
-    titulo,
-    direccion,
-    latitud || null,
-    longitud || null,
-    capacidad,
-    importe,
-    activo,
-    Number(id),
-  ];
+  const validacion = validarSalonBody(salon, true, existeSalon);
+  if (!validacion.ok) {
+    throw new Error(validacion.message);
+  }
+
+  let sql = "";
+
+  const keys = Object.keys(salon);
+  const values = Object.values(salon);
+
+  const setValues = keys.map((key) => `${key} = ?`).join(", ");
+  const params = [...values, Number(id)];
+
+  sql = `UPDATE salones SET ${setValues} WHERE salon_id = ?`;
 
   const [result] = await conexion.execute(sql, params);
 
@@ -78,4 +95,10 @@ const eliminarSalon = async (id) => {
   return result;
 };
 
-export { crearSalon, listarSalones, obtenerSalon, actualizarSalon, eliminarSalon };
+export {
+  crearSalon,
+  listarSalones,
+  obtenerSalon,
+  actualizarSalon,
+  eliminarSalon,
+};

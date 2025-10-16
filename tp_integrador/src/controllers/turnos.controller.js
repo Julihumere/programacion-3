@@ -5,17 +5,9 @@ import {
   actualizarTurno,
   eliminarTurno,
 } from "../services/turnos.service.js";
-import { validarTurnoBody } from "../utils/validador.js";
 
 const crearTurnoController = async (req, res) => {
   try {
-    const validacion = validarTurnoBody(req.body);
-    if (!validacion.ok) {
-      return res
-        .status(400)
-        .json({ status: "error", message: validacion.message });
-    }
-
     const turno = await crearTurno(req.body);
     if (!turno) {
       throw new Error("No se pudo crear el turno");
@@ -70,16 +62,12 @@ const obtenerTurnoController = async (req, res) => {
 
 const actualizarTurnoController = async (req, res) => {
   try {
-    const validacion = validarTurnoBody(req.body);
-    if (!validacion.ok) {
-      return res
-        .status(400)
-        .json({ status: "error", message: validacion.message });
-    }
-
     const turno = await actualizarTurno(req.params.id, req.body);
     if (!turno) {
-      throw new Error("No se pudo actualizar el turno");
+      return res.status(404).json({
+        status: "error",
+        message: "El turno no existe",
+      });
     }
 
     return res

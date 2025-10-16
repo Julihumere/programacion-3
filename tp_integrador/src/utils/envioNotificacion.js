@@ -3,18 +3,22 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import Handlebars from "handlebars";
+import { emails } from "../constants/emails.js";
 
-const enviarNotificacion = async (notificacion) => {
+const enviarNotificacion = async (notificacion, idPlantilla) => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
-  const plantilla = path.join(__dirname, "..", "views", "plantillaSalon.hbs");
-
-  const datosPlantilla = await readFile(plantilla, "utf8");
-
+  const plantilla = emails.find((email) => email.id === idPlantilla)?.plantilla;
+  if (!plantilla) {
+    throw new Error("Plantilla de email no encontrada");
+  }
+  const datosPlantilla = await readFile(
+    path.join(__dirname, "..", "views", plantilla),
+    "utf8"
+  );
   const template = Handlebars.compile(datosPlantilla);
   const html = template(notificacion);
-
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {

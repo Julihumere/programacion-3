@@ -14,7 +14,7 @@ const router = Router();
 router.post("/", validarSesion, esAdmin, crearTurnoController);
 router.get("/", validarSesion, listarTurnosController);
 router.get("/:id", validarSesion, obtenerTurnoController);
-router.put("/:id", validarSesion, esAdmin, actualizarTurnoController);
+router.patch("/:id", validarSesion, esAdmin, actualizarTurnoController);
 router.delete("/:id", validarSesion, esAdmin, eliminarTurnoController);
 
 export default router;
