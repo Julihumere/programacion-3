@@ -4,42 +4,8 @@ import {
   iniciarSesion,
 } from "../services/usuarios.service.js";
 
-const validarUsuarioBody = (body) => {
-  const {
-    nombre,
-    apellido,
-    nombre_usuario,
-    contrasenia,
-    tipo_usuario,
-    celular,
-  } = body || {};
-
-  if (
-    !nombre ||
-    !apellido ||
-    !nombre_usuario ||
-    !contrasenia ||
-    !tipo_usuario ||
-    !celular
-  ) {
-    return {
-      ok: false,
-      message:
-        "Campos requeridos: nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular",
-    };
-  }
-  return { ok: true };
-};
-
 const crearUsuarioController = async (req, res) => {
   try {
-    const validacion = validarUsuarioBody(req.body);
-    if (!validacion.ok) {
-      return res
-        .status(400)
-        .json({ status: "error", message: validacion.message });
-    }
-
     await crearUsuario(req.body);
     return res
       .status(201)

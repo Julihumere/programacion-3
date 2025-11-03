@@ -8,7 +8,7 @@ const crearUsuario = async (usuario) => {
     apellido,
     nombre_usuario,
     contrasenia,
-    tipo_usuario,
+    tipo_usuario = 3,
     celular,
     foto,
   } = usuario;

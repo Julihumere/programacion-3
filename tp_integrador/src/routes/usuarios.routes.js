@@ -5,11 +5,15 @@ import {
 } from "../controllers/usuarios.controller.js";
 import { Router } from "express";
 import { validarSesion } from "../middlewares/validarSesion.js";
+import {
+  validarCrearUsuario,
+  validarIniciarSesion,
+} from "../middlewares/validaciones.usuarios.js";
 
 const router = Router();
 
-router.post("/registrar", crearUsuarioController);
-router.post("/iniciar_sesion", iniciarSesionController);
+router.post("/registrar", validarCrearUsuario, crearUsuarioController);
+router.post("/iniciar_sesion", validarIniciarSesion, iniciarSesionController);
 router.get("/ver_usuarios", validarSesion, listarUsuariosController);
 
 export default router;
