@@ -1,16 +1,13 @@
-import { body, validationResult } from "express-validator";
+import { body, check, validationResult } from "express-validator";
+import { mensajeError400 } from "../utils/mensajes.js";
 
 // Middleware para manejar los errores de validación
 export const manejarErroresValidacion = (req, res, next) => {
   const errores = validationResult(req);
   if (!errores.isEmpty()) {
-    return res.status(400).json({
-      status: "error",
-      message: "Errores de validación",
-      errores: errores.array(),
-    });
+    return res.status(400).json(mensajeError400(errores.mapped()));
   }
-  next();
+  return next();
 };
 
 export const validarCrearUsuario = [
@@ -68,6 +65,15 @@ export const validarIniciarSesion = [
     .withMessage("El nombre de usuario es requerido"),
 
   body("contrasenia").notEmpty().withMessage("La contraseña es requerida"),
+
+  manejarErroresValidacion,
+];
+
+export const validarCrearSalon = [
+  check("titulo", "El titulo es requerido").trim().notEmpty(),
+  check("direccion", "La direccion es requerida").trim().notEmpty(),
+  check("importe", "El importe es requerido").isFloat({ min: 1 }).notEmpty(),
+  check("capacidad", "La capacidad es requerida").isInt({ min: 1 }).notEmpty(),
 
   manejarErroresValidacion,
 ];

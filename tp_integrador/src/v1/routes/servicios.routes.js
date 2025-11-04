@@ -5,9 +5,9 @@ import {
   obtenerServicioController,
   actualizarServicioController,
   eliminarServicioController,
-} from "../controllers/servicios.controller.js";
-import esAdmin from "../utils/esAdmin.js";
-import { validarSesion } from "../middlewares/validarSesion.js";
+} from "../../controllers/servicios.controller.js";
+import esAdmin from "../../utils/esAdmin.js";
+import { validarSesion } from "../../middlewares/validarSesion.js";
 
 const router = Router();
 

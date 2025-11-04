@@ -5,9 +5,9 @@ import {
   obtenerTurnoController,
   actualizarTurnoController,
   eliminarTurnoController,
-} from "../controllers/turnos.controller.js";
-import esAdmin from "../utils/esAdmin.js";
-import { validarSesion } from "../middlewares/validarSesion.js";
+} from "../../controllers/turnos.controller.js";
+import esAdmin from "../../utils/esAdmin.js";
+import { validarSesion } from "../../middlewares/validarSesion.js";
 
 const router = Router();
 

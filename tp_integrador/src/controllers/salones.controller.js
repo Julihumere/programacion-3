@@ -1,112 +1,122 @@
+import SalonesService from "../services/salones.service.js";
+import { enviarNotificacion } from "../utils/envioNotificacion.js";
 import {
-  crearSalon,
-  listarSalones,
-  obtenerSalon,
-  actualizarSalon,
-  eliminarSalon,
-} from "../services/salones.service.js";
+  mensajeError500,
+  mensajeError404,
+  mensajeError400,
+} from "../utils/mensajes.js";
+import apicache from "apicache";
 
-const crearSalonController = async (req, res) => {
-  try {
-    const salon = await crearSalon(req.body);
-    if (!salon) {
-      throw new Error("No se pudo crear el salon");
-    }
-
-    return res
-      .status(201)
-      .json({ status: "success", message: "Salon creado correctamente" });
-  } catch (error) {
-    console.error("Error INSERT en /salones:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo crear el salon",
-      error: error?.sqlMessage || error?.message,
-    });
+export default class SalonesController {
+  constructor() {
+    this.salonesService = new SalonesService();
   }
-};
 
-const listarSalonesController = async (req, res) => {
-  try {
-    const salones = await listarSalones();
-    return res.status(200).json(salones);
-  } catch (error) {
-    console.error("Error SELECT en /salones:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo obtener la lista de salones",
-      error: error?.code || error?.message,
-    });
-  }
-};
+  listarSalones = async (req, res) => {
+    try {
+      const salones = await this.salonesService.listarSalones();
 
-const obtenerSalonController = async (req, res) => {
-  try {
-    const salon = await obtenerSalon(req.params.id);
-    if (!salon) {
-      return res.status(404).json({
-        status: "error",
-        message: "Salon no encontrado",
+      if (!salones) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontraron salones"));
+      }
+
+      return res.status(200).json({
+        estado: "success",
+        salones,
       });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
-    return res.status(200).json(salon);
-  } catch (error) {
-    console.error("Error SELECT en /salones:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo obtener el salon",
-      error: error?.code || error?.message,
-    });
-  }
-};
+  };
 
-const actualizarSalonController = async (req, res) => {
-  try {
-    const salon = await actualizarSalon(req.params.id, req.body);
-    if (!salon) {
-      return res.status(404).json({
-        status: "error",
-        message: "El salon no existe",
+  obtenerSalon = async (req, res) => {
+    try {
+      const salon = await this.salonesService.obtenerSalon(req.params.id);
+
+      if (!salon) {
+        return res.status(404).json(mensajeError404("No se encontró el salon"));
+      }
+
+      return res.status(200).json({
+        estado: "success",
+        salon: salon,
       });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
+  };
 
-    return res
-      .status(200)
-      .json({ status: "success", message: "Salon actualizado correctamente" });
-  } catch (error) {
-    console.error("Error UPDATE en /salones:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo actualizar el salon",
-      error: error?.sqlMessage || error?.message,
-    });
-  }
-};
+  crearSalon = async (req, res) => {
+    try {
+      const salon = await this.salonesService.crearSalon(req.body);
+      if (!salon) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo crear el salon"));
+      }
 
-const eliminarSalonController = async (req, res) => {
-  try {
-    const salon = await eliminarSalon(req.params.id);
-    if (!salon) {
-      throw new Error("No se pudo eliminar el salon");
+      apicache.clear();
+
+      await enviarNotificacion(
+        {
+          titulo: `Nuevo Salón de Fiestas: ${salon.titulo}`,
+          direccion: salon.direccion,
+          latitud: salon.latitud,
+          longitud: salon.longitud,
+          capacidad: salon.capacidad,
+          importe: salon.importe,
+          destinatario: process.env.EMAIL_DESTINATARIO,
+        },
+        1
+      );
+
+      return res.status(201).json({
+        estado: "success",
+        mensaje: "Salon creado correctamente",
+        salon,
+      });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
+  };
 
-    return res
-      .status(200)
-      .json({ status: "success", message: "Salon eliminado correctamente" });
-  } catch (error) {
-    console.error("Error DELETE en /salones:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo eliminar el salon",
-      error: error?.sqlMessage || error?.message,
-    });
-  }
-};
+  actualizarSalon = async (req, res) => {
+    try {
+      const salon = await this.salonesService.actualizarSalon(
+        req.params.id,
+        req.body
+      );
+      if (!salon) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo actualizar el salon"));
+      }
+      return res.status(200).json({
+        estado: "success",
+        mensaje: "Salon actualizado correctamente",
+        salon,
+      });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
+    }
+  };
 
-export {
-  crearSalonController,
-  listarSalonesController,
-  obtenerSalonController,
-  actualizarSalonController,
-  eliminarSalonController,
-};
+  eliminarSalon = async (req, res) => {
+    try {
+      const salon = await this.salonesService.eliminarSalon(req.params.id);
+      if (!salon) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo eliminar el salon"));
+      }
+      return res.status(200).json({
+        estado: "success",
+        mensaje: "Salon eliminado correctamente",
+      });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
+    }
+  };
+}

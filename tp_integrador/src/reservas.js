@@ -1,21 +1,19 @@
 import express from "express";
-import dotenv from "dotenv";
-import usuariosRouter from "./routes/usuarios.routes.js";
-import salonesRouter from "./routes/salones.routes.js";
-import serviciosRouter from "./routes/servicios.routes.js";
-import turnosRouter from "./routes/turnos.routes.js";
+import usuariosRouter from "./v1/routes/usuarios.routes.js";
+import { router as v1SalonesRouter } from "./v1/routes/salones.routes.js";
+import serviciosRouter from "./v1/routes/servicios.routes.js";
+import turnosRouter from "./v1/routes/turnos.routes.js";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
 import passport from "./config/passport.js";
-
-dotenv.config();
 
 const hbs = expressHandlebars.create({
   defaultLayout: "main",
 });
 
 const app = express();
+
 app.use(express.json());
 app.use(morgan("dev"));
 
@@ -34,12 +32,10 @@ app.get("/health", (_req, res) => {
   res.send({ ok: true });
 });
 
-app.use("/usuarios", usuariosRouter);
-app.use("/salones", salonesRouter);
-app.use("/servicios", serviciosRouter);
-app.use("/turnos", turnosRouter);
+// Rutas v1
+app.use("/api/v1/usuarios", usuariosRouter);
+app.use("/api/v1/salones", v1SalonesRouter);
+app.use("/api/v1/servicios", serviciosRouter);
+app.use("/api/v1/turnos", turnosRouter);
 
-const port = Number(process.env.PORT || 3000);
-app.listen(port, () => {
-  console.log(`El servidor está corriendo en el puerto ${port}`);
-});
+export default app;

@@ -2,13 +2,13 @@ import {
   crearUsuarioController,
   listarUsuariosController,
   iniciarSesionController,
-} from "../controllers/usuarios.controller.js";
+} from "../../controllers/usuarios.controller.js";
 import { Router } from "express";
-import { validarSesion } from "../middlewares/validarSesion.js";
+import { validarSesion } from "../../middlewares/validarSesion.js";
 import {
   validarCrearUsuario,
   validarIniciarSesion,
-} from "../middlewares/validaciones.usuarios.js";
+} from "../../middlewares/validarCampos.js";
 
 const router = Router();
 
