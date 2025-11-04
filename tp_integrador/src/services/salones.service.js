@@ -1,6 +1,3 @@
-import { conexion } from "../config/db.js";
-import { enviarNotificacion } from "../utils/envioNotificacion.js";
-import { validarSalonBody } from "../utils/validador.js";
 import Salones from "../config/salones.js";
 
 export default class SalonesService {

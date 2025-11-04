@@ -1,112 +1,124 @@
+import ServiciosService from "../services/servicios.service.js";
+import { enviarNotificacion } from "../utils/envioNotificacion.js";
 import {
-  crearServicio,
-  listarServicios,
-  obtenerServicio,
-  actualizarServicio,
-  eliminarServicio,
-} from "../services/servicios.service.js";
+  mensajeError500,
+  mensajeError404,
+  mensajeError400,
+} from "../utils/mensajes.js";
+import apicache from "apicache";
 
-const crearServicioController = async (req, res) => {
-  try {
-    const servicio = await crearServicio(req.body);
-    if (!servicio) {
-      throw new Error("No se pudo crear el servicio");
-    }
-
-    return res
-      .status(201)
-      .json({ status: "success", message: "Servicio creado correctamente" });
-  } catch (error) {
-    console.error("Error INSERT en /servicios:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo crear el servicio",
-      error: error?.sqlMessage || error?.message,
-    });
+export default class ServiciosController {
+  constructor() {
+    this.serviciosService = new ServiciosService();
   }
-};
 
-const listarServiciosController = async (req, res) => {
-  try {
-    const servicios = await listarServicios();
-    return res.status(200).json(servicios);
-  } catch (error) {
-    console.error("Error SELECT en /servicios:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo obtener la lista de servicios",
-      error: error?.code || error?.message,
-    });
-  }
-};
+  listarServicios = async (req, res) => {
+    try {
+      const servicios = await this.serviciosService.listarServicios();
 
-const obtenerServicioController = async (req, res) => {
-  try {
-    const servicio = await obtenerServicio(req.params.id);
-    if (!servicio) {
-      return res.status(404).json({
-        status: "error",
-        message: "Servicio no encontrado",
+      if (!servicios) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontraron servicios"));
+      }
+
+      return res.status(200).json({
+        estado: "success",
+        servicios,
       });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
-    return res.status(200).json(servicio);
-  } catch (error) {
-    console.error("Error SELECT en /servicios:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo obtener el servicio",
-      error: error?.code || error?.message,
-    });
-  }
-};
+  };
 
-const actualizarServicioController = async (req, res) => {
-  try {
-    const servicio = await actualizarServicio(req.params.id, req.body);
-    if (!servicio)
-      return res.status(404).json({
-        status: "error",
-        message: "El servicio no existe",
+  obtenerServicio = async (req, res) => {
+    try {
+      const servicioId = req.params.id;
+      const servicio = await this.serviciosService.obtenerServicio(servicioId);
+      if (!servicio) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontró el servicio"));
+      }
+      return res.status(200).json({
+        estado: "success",
+        servicio,
       });
-
-    return res.status(200).json({
-      status: "success",
-      message: "Servicio actualizado correctamente",
-    });
-  } catch (error) {
-    console.error("Error UPDATE en /servicios:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo actualizar el servicio",
-      error: error?.sqlMessage || error?.message,
-    });
-  }
-};
-
-const eliminarServicioController = async (req, res) => {
-  try {
-    const servicio = await eliminarServicio(req.params.id);
-    if (!servicio) {
-      throw new Error("No se pudo eliminar el servicio");
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
+  };
 
-    return res
-      .status(200)
-      .json({ status: "success", message: "Servicio eliminado correctamente" });
-  } catch (error) {
-    console.error("Error DELETE en /servicios:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo eliminar el servicio",
-      error: error?.sqlMessage || error?.message,
-    });
-  }
-};
+  crearServicio = async (req, res) => {
+    try {
+      const servicio = await this.serviciosService.crearServicio(req.body);
+      if (!servicio) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo crear el servicio"));
+      }
 
-export {
-  crearServicioController,
-  listarServiciosController,
-  obtenerServicioController,
-  actualizarServicioController,
-  eliminarServicioController,
-};
+      apicache.clear();
+
+      await enviarNotificacion(
+        {
+          titulo: `Nuevo Servicio: ${servicio.descripcion}`,
+          importe: servicio.importe,
+          destinatario: process.env.EMAIL_DESTINATARIO,
+        },
+        2
+      );
+
+      return res.status(201).json({
+        estado: "success",
+        mensaje: "Servicio creado correctamente",
+        servicio,
+      });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
+    }
+  };
+
+  actualizarServicio = async (req, res) => {
+    try {
+      const servicio = await this.serviciosService.actualizarServicio(
+        req.params.id,
+        req.body
+      );
+      if (!servicio) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo actualizar el servicio"));
+      }
+
+      apicache.clear();
+      return res.status(200).json({
+        estado: "success",
+        mensaje: "Servicio actualizado correctamente",
+        servicio,
+      });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
+    }
+  };
+
+  eliminarServicio = async (req, res) => {
+    try {
+      const servicio = await this.serviciosService.eliminarServicio(
+        req.params.id
+      );
+      if (!servicio) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo eliminar el servicio"));
+      }
+      apicache.clear();
+      return res.status(200).json({
+        estado: "success",
+        mensaje: "Servicio eliminado correctamente",
+      });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
+    }
+  };
+}

@@ -77,3 +77,9 @@ export const validarCrearSalon = [
 
   manejarErroresValidacion,
 ];
+
+export const validarCrearServicio = [
+  check("descripcion", "La descripcion es requerida").trim().notEmpty(),
+  check("importe", "El importe es requerido").isFloat({ min: 1 }).notEmpty(),
+  manejarErroresValidacion,
+];

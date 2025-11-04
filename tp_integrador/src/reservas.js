@@ -1,7 +1,7 @@
 import express from "express";
 import usuariosRouter from "./v1/routes/usuarios.routes.js";
 import { router as v1SalonesRouter } from "./v1/routes/salones.routes.js";
-import serviciosRouter from "./v1/routes/servicios.routes.js";
+import { router as v1ServiciosRouter } from "./v1/routes/servicios.routes.js";
 import turnosRouter from "./v1/routes/turnos.routes.js";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
@@ -35,7 +35,7 @@ app.get("/health", (_req, res) => {
 // Rutas v1
 app.use("/api/v1/usuarios", usuariosRouter);
 app.use("/api/v1/salones", v1SalonesRouter);
-app.use("/api/v1/servicios", serviciosRouter);
+app.use("/api/v1/servicios", v1ServiciosRouter);
 app.use("/api/v1/turnos", turnosRouter);
 
 export default app;

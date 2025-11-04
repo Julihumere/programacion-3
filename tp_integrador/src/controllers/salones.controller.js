@@ -93,6 +93,7 @@ export default class SalonesController {
           .status(400)
           .json(mensajeError400("No se pudo actualizar el salon"));
       }
+      apicache.clear();
       return res.status(200).json({
         estado: "success",
         mensaje: "Salon actualizado correctamente",
@@ -111,6 +112,7 @@ export default class SalonesController {
           .status(400)
           .json(mensajeError400("No se pudo eliminar el salon"));
       }
+      apicache.clear();
       return res.status(200).json({
         estado: "success",
         mensaje: "Salon eliminado correctamente",

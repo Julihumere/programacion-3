@@ -2,9 +2,8 @@ import { conexion } from "./db.js";
 
 export default class Salones {
   buscarTodos = async () => {
-    const [salones] = await conexion.execute(
-      "SELECT * FROM salones WHERE activo = 1"
-    );
+    const sql = "SELECT * FROM salones WHERE activo = 1";
+    const [salones] = await conexion.execute(sql);
 
     if (salones.length === 0) return null;
 
@@ -12,10 +11,8 @@ export default class Salones {
   };
 
   buscarPorId = async (salon_id) => {
-    const [salon] = await conexion.execute(
-      "SELECT * FROM salones WHERE salon_id = ? AND activo = 1",
-      [salon_id]
-    );
+    const sql = "SELECT * FROM salones WHERE salon_id = ? AND activo = 1";
+    const [salon] = await conexion.execute(sql, [salon_id]);
 
     if (salon.length === 0) return null;
 
@@ -23,18 +20,21 @@ export default class Salones {
   };
 
   crear = async (salon) => {
-    const [result] = await conexion.execute(
-      "INSERT INTO salones (titulo, direccion, latitud, longitud, capacidad, importe, activo) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [
-        salon.titulo,
-        salon.direccion,
-        salon.latitud ?? null,
-        salon.longitud ?? null,
-        salon.capacidad,
-        salon.importe,
-        salon.activo ?? 1,
-      ]
-    );
+    const sql =
+      "INSERT INTO salones (titulo, direccion, latitud, longitud, capacidad, importe, activo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const params = [
+      salon.titulo,
+      salon.direccion,
+      salon.latitud,
+      salon.longitud,
+      salon.capacidad,
+      salon.importe,
+      salon.activo ?? 1,
+    ];
+    const [result] = await conexion.execute(sql, params);
+
+    if (result.affectedRows === undefined) return null;
+
     return result;
   };
 
@@ -55,10 +55,11 @@ export default class Salones {
   };
 
   eliminar = async (id) => {
-    const [result] = await conexion.execute(
-      "DELETE FROM salones WHERE id = ?",
-      [id]
-    );
+    const sql = "UPDATE salones SET activo = 0 WHERE salon_id = ?";
+    const [result] = await conexion.execute(sql, [id]);
+
+    if (result.affectedRows === 0) return null;
+
     return result;
   };
 }
