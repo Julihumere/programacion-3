@@ -83,3 +83,10 @@ export const validarCrearServicio = [
   check("importe", "El importe es requerido").isFloat({ min: 1 }).notEmpty(),
   manejarErroresValidacion,
 ];
+
+export const validarCrearTurno = [
+  check("orden", "El orden es requerido").isInt({ min: 1 }).notEmpty(),
+  check("hora_desde", "La hora de inicio es requerida").notEmpty(),
+  check("hora_hasta", "La hora de fin es requerida").notEmpty(),
+  manejarErroresValidacion,
+];

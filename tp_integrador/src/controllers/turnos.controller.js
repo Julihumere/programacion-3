@@ -1,112 +1,113 @@
+import TurnosService from "../services/turnos.service.js";
+import { enviarNotificacion } from "../utils/envioNotificacion.js";
 import {
-  crearTurno,
-  listarTurnos,
-  obtenerTurno,
-  actualizarTurno,
-  eliminarTurno,
-} from "../services/turnos.service.js";
+  mensajeError500,
+  mensajeError404,
+  mensajeError400,
+} from "../utils/mensajes.js";
+import apicache from "apicache";
 
-const crearTurnoController = async (req, res) => {
-  try {
-    const turno = await crearTurno(req.body);
-    if (!turno) {
-      throw new Error("No se pudo crear el turno");
+export default class TurnosController {
+  constructor() {
+    this.turnosService = new TurnosService();
+  }
+
+  listarTurnos = async (req, res) => {
+    try {
+      const turnos = await this.turnosService.listarTurnos();
+      if (!turnos) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontraron turnos"));
+      }
+      return res.status(200).json({ estado: "success", turnos });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
+  };
 
-    return res
-      .status(201)
-      .json({ status: "success", message: "Turno creado correctamente" });
-  } catch (error) {
-    console.error("Error INSERT en /turnos:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo crear el turno",
-      error: error?.sqlMessage || error?.message,
-    });
-  }
-};
+  obtenerTurno = async (req, res) => {
+    try {
+      const turnoId = req.params.id;
+      const turno = await this.turnosService.obtenerTurno(turnoId);
+      if (!turno) {
+        return res.status(404).json(mensajeError404("No se encontró el turno"));
+      }
+      return res.status(200).json({ estado: "success", turno });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
+    }
+  };
 
-const listarTurnosController = async (req, res) => {
-  try {
-    const turnos = await listarTurnos();
-    return res.status(200).json(turnos);
-  } catch (error) {
-    console.error("Error SELECT en /turnos:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo obtener la lista de turnos",
-      error: error?.code || error?.message,
-    });
-  }
-};
+  crearTurno = async (req, res) => {
+    try {
+      const turno = await this.turnosService.crearTurno(req.body);
+      if (!turno) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo crear el turno"));
+      }
 
-const obtenerTurnoController = async (req, res) => {
-  try {
-    const turno = await obtenerTurno(req.params.id);
-    if (!turno) {
-      return res.status(404).json({
-        status: "error",
-        message: "Turno no encontrado",
+      apicache.clear();
+
+      await enviarNotificacion(
+        {
+          titulo: `Nuevo Turno: ${turno.orden}`,
+          hora_desde: turno.hora_desde,
+          hora_hasta: turno.hora_hasta,
+          destinatario: process.env.EMAIL_DESTINATARIO,
+        },
+        3
+      );
+
+      return res.status(201).json({
+        estado: "success",
+        mensaje: "Turno creado correctamente",
+        turno,
       });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
-    return res.status(200).json(turno);
-  } catch (error) {
-    console.error("Error SELECT en /turnos:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo obtener el turno",
-      error: error?.code || error?.message,
-    });
-  }
-};
+  };
 
-const actualizarTurnoController = async (req, res) => {
-  try {
-    const turno = await actualizarTurno(req.params.id, req.body);
-    if (!turno) {
-      return res.status(404).json({
-        status: "error",
-        message: "El turno no existe",
+  actualizarTurno = async (req, res) => {
+    try {
+      const turnoId = req.params.id;
+      const turno = await this.turnosService.actualizarTurno(turnoId, req.body);
+      if (!turno) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo actualizar el turno"));
+      }
+      apicache.clear();
+
+      return res.status(200).json({
+        estado: "success",
+        mensaje: "Turno actualizado correctamente",
+        turno,
       });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
+  };
 
-    return res
-      .status(200)
-      .json({ status: "success", message: "Turno actualizado correctamente" });
-  } catch (error) {
-    console.error("Error UPDATE en /turnos:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo actualizar el turno",
-      error: error?.sqlMessage || error?.message,
-    });
-  }
-};
+  eliminarTurno = async (req, res) => {
+    try {
+      const turnoId = req.params.id;
+      const turno = await this.turnosService.eliminarTurno(turnoId);
+      if (!turno) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo eliminar el turno"));
+      }
+      apicache.clear();
 
-const eliminarTurnoController = async (req, res) => {
-  try {
-    const turno = await eliminarTurno(req.params.id);
-    if (!turno) {
-      throw new Error("No se pudo eliminar el turno");
+      return res.status(200).json({
+        estado: "success",
+        mensaje: "Turno eliminado correctamente",
+      });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
     }
-
-    return res
-      .status(200)
-      .json({ status: "success", message: "Turno eliminado correctamente" });
-  } catch (error) {
-    console.error("Error DELETE en /turnos:", error);
-    return res.status(500).json({
-      status: "error",
-      message: "No se pudo eliminar el turno",
-      error: error?.sqlMessage || error?.message,
-    });
-  }
-};
-
-export {
-  crearTurnoController,
-  listarTurnosController,
-  obtenerTurnoController,
-  actualizarTurnoController,
-  eliminarTurnoController,
-};
+  };
+}

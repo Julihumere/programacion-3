@@ -1,95 +1,30 @@
-import { conexion } from "../config/db.js";
-import { validarTurnoBody } from "../utils/validador.js";
-import { enviarNotificacion } from "../utils/envioNotificacion.js";
+import Turnos from "../config/turnos.js";
 
-const crearTurno = async (turno) => {
-  const { orden, hora_desde, hora_hasta, activo } = turno;
-
-  const validacion = validarTurnoBody(turno);
-  if (!validacion.ok) {
-    throw new Error(validacion.message);
+export default class TurnosService {
+  constructor() {
+    this.turnos = new Turnos();
   }
 
-  const sql =
-    "INSERT INTO turnos (orden, hora_desde, hora_hasta, activo) VALUES (?, ?, ?, ?)";
-  const params = [orden, hora_desde, hora_hasta, activo];
+  listarTurnos = async () => {
+    return await this.turnos.buscarTodos();
+  };
 
-  const [result] = await conexion.execute(sql, params);
+  obtenerTurno = async (turno_id) => {
+    return await this.turnos.buscarPorId(turno_id);
+  };
 
-  if (result.affectedRows === undefined) {
-    throw new Error("No se pudo crear el turno");
-  }
+  crearTurno = async (turno) => {
+    return await this.turnos.crear(turno);
+  };
 
-  await enviarNotificacion(
-    {
-      titulo: `Nuevo Turno: ${orden}`,
-      orden: orden,
-      hora_desde: hora_desde,
-      hora_hasta: hora_hasta,
-      destinatario: process.env.EMAIL_DESTINATARIO,
-    },
-    3
-  );
+  actualizarTurno = async (turno_id, turno) => {
+    const turnoExistente = await this.turnos.buscarPorId(turno_id);
+    if (!turnoExistente) return null;
 
-  return result;
-};
+    return await this.turnos.actualizar(turno_id, turno);
+  };
 
-const listarTurnos = async () => {
-  const [rows] = await conexion.execute("SELECT * FROM turnos ORDER BY orden");
-  return rows;
-};
-
-const obtenerTurno = async (id) => {
-  const [rows] = await conexion.execute(
-    "SELECT * FROM turnos WHERE turno_id = ?",
-    [Number(id)]
-  );
-  return rows[0];
-};
-
-const actualizarTurno = async (id, turno) => {
-  const existeTurno = await obtenerTurno(id);
-  if (!existeTurno) return null;
-
-  const validacion = validarTurnoBody(turno, true, existeTurno);
-  if (!validacion.ok) {
-    throw new Error(validacion.message);
-  }
-
-  let sql = "";
-  const keys = Object.keys(turno);
-  const values = Object.values(turno);
-  const setValues = keys.map((key) => `${key} = ?`).join(", ");
-  const params = [...values, Number(id)];
-  sql = `UPDATE turnos SET ${setValues} WHERE turno_id = ?`;
-
-  const [result] = await conexion.execute(sql, params);
-
-  if (result.affectedRows === 0) {
-    throw new Error("Turno no encontrado o no se pudo actualizar");
-  }
-
-  return result;
-};
-
-const eliminarTurno = async (id) => {
-  const sql =
-    "UPDATE turnos SET activo = 0, modificado = NOW() WHERE turno_id = ?";
-  const params = [Number(id)];
-
-  const [result] = await conexion.execute(sql, params);
-
-  if (result.affectedRows === 0) {
-    throw new Error("Turno no encontrado o no se pudo eliminar");
-  }
-
-  return result;
-};
-
-export {
-  crearTurno,
-  listarTurnos,
-  obtenerTurno,
-  actualizarTurno,
-  eliminarTurno,
-};
+  eliminarTurno = async (turno_id) => {
+    return await this.turnos.eliminar(turno_id);
+  };
+}
