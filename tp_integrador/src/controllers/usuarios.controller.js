@@ -4,6 +4,7 @@ import {
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
+import jwt from "jsonwebtoken";
 
 export default class UsuariosController {
   constructor() {

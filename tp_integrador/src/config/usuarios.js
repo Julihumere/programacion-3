@@ -1,4 +1,5 @@
 import { conexion } from "./db.js";
+import bcrypt from "bcrypt";
 
 export default class Usuarios {
   buscarTodos = async () => {
