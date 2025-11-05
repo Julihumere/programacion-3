@@ -21,4 +21,4 @@ const validarSesion = (req, res, next) => {
   })(req, res, next);
 };
 
-export { validarSesion };
+export default validarSesion;

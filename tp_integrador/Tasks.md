@@ -106,10 +106,10 @@
 ### BREAD - Usuarios
 
 - [x] **B**rowse - Listar todos los usuarios
-- [ ] **R**ead - Ver detalle de un usuario // JULIO
-- [ ] **E**dit - Editar un usuario existente // JULIO
-- [ ] **A**dd - Crear nuevo usuario // JULIO
-- [ ] **D**elete - Eliminar un usuario // JULIO
+- [x] **R**ead - Ver detalle de un usuario // JULIO
+- [x] **E**dit - Editar un usuario existente // JULIO
+- [x] **A**dd - Crear nuevo usuario // JULIO
+- [x] **D**elete - Eliminar un usuario // JULIO
 
 ### Informes y Reportes
 
