@@ -5,7 +5,6 @@ import {
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
-import apicache from "apicache";
 
 export default class TurnosController {
   constructor() {
@@ -48,8 +47,6 @@ export default class TurnosController {
           .json(mensajeError400("No se pudo crear el turno"));
       }
 
-      apicache.clear();
-
       await enviarNotificacion(
         {
           titulo: `Nuevo Turno: ${turno.orden}`,
@@ -79,7 +76,6 @@ export default class TurnosController {
           .status(400)
           .json(mensajeError400("No se pudo actualizar el turno"));
       }
-      apicache.clear();
 
       return res.status(200).json({
         estado: "success",
@@ -100,7 +96,6 @@ export default class TurnosController {
           .status(400)
           .json(mensajeError400("No se pudo eliminar el turno"));
       }
-      apicache.clear();
 
       return res.status(200).json({
         estado: "success",

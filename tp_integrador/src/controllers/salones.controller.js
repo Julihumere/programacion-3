@@ -5,7 +5,6 @@ import {
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
-import apicache from "apicache";
 
 export default class SalonesController {
   constructor() {
@@ -57,21 +56,6 @@ export default class SalonesController {
           .json(mensajeError400("No se pudo crear el salon"));
       }
 
-      apicache.clear();
-
-      await enviarNotificacion(
-        {
-          titulo: `Nuevo Salón de Fiestas: ${salon.titulo}`,
-          direccion: salon.direccion,
-          latitud: salon.latitud,
-          longitud: salon.longitud,
-          capacidad: salon.capacidad,
-          importe: salon.importe,
-          destinatario: process.env.EMAIL_DESTINATARIO,
-        },
-        1
-      );
-
       return res.status(201).json({
         estado: "success",
         mensaje: "Salon creado correctamente",
@@ -93,7 +77,6 @@ export default class SalonesController {
           .status(400)
           .json(mensajeError400("No se pudo actualizar el salon"));
       }
-      apicache.clear();
       return res.status(200).json({
         estado: "success",
         mensaje: "Salon actualizado correctamente",
@@ -112,7 +95,6 @@ export default class SalonesController {
           .status(400)
           .json(mensajeError400("No se pudo eliminar el salon"));
       }
-      apicache.clear();
       return res.status(200).json({
         estado: "success",
         mensaje: "Salon eliminado correctamente",

@@ -5,7 +5,6 @@ import {
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
-import apicache from "apicache";
 
 export default class ServiciosController {
   constructor() {
@@ -58,8 +57,6 @@ export default class ServiciosController {
           .json(mensajeError400("No se pudo crear el servicio"));
       }
 
-      apicache.clear();
-
       await enviarNotificacion(
         {
           titulo: `Nuevo Servicio: ${servicio.descripcion}`,
@@ -91,7 +88,6 @@ export default class ServiciosController {
           .json(mensajeError400("No se pudo actualizar el servicio"));
       }
 
-      apicache.clear();
       return res.status(200).json({
         estado: "success",
         mensaje: "Servicio actualizado correctamente",
@@ -112,7 +108,6 @@ export default class ServiciosController {
           .status(400)
           .json(mensajeError400("No se pudo eliminar el servicio"));
       }
-      apicache.clear();
       return res.status(200).json({
         estado: "success",
         mensaje: "Servicio eliminado correctamente",

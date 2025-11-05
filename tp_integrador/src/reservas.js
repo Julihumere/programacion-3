@@ -7,6 +7,9 @@ import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
 import passport from "./config/passport.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.js";
+import fs from "fs";
 
 const hbs = expressHandlebars.create({
   defaultLayout: "main",
@@ -15,7 +18,13 @@ const hbs = expressHandlebars.create({
 const app = express();
 
 app.use(express.json());
-app.use(morgan("dev"));
+
+// Configuración de morgan
+let accessLogFile = fs.createWriteStream("./access.log", {
+  flags: "a",
+});
+app.use(morgan("combined", { stream: accessLogFile })); // archivo .log
+app.use(morgan("combined")); // consola
 
 // Inicializar passport
 app.use(passport.initialize());
@@ -31,6 +40,9 @@ app.use(express.static(path.join(path.dirname(""), "..", "public")));
 app.get("/health", (_req, res) => {
   res.send({ ok: true });
 });
+
+// Documentación Swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rutas v1
 app.use("/api/v1/usuarios", usuariosRouter);
