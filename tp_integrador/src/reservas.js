@@ -1,9 +1,9 @@
 import express from "express";
-import usuariosRouter from "./v1/routes/usuarios.routes.js";
-import { router as v1SalonesRouter } from "./v1/routes/salones.routes.js";
-import { router as v1ServiciosRouter } from "./v1/routes/servicios.routes.js";
-import turnosRouter from "./v1/routes/turnos.routes.js";
-import { router as v1ReservasRouter } from "./v1/routes/reservas.routes.js";
+import usuariosRouter from "./routes/v1/usuarios.routes.js";
+import { router as v1SalonesRouter } from "./routes/v1/salones.routes.js";
+import { router as v1ServiciosRouter } from "./routes/v1/servicios.routes.js";
+import turnosRouter from "./routes/v1/turnos.routes.js";
+import { router as v1ReservasRouter } from "./routes/v1/reservas.routes.js";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
