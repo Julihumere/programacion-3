@@ -10,17 +10,17 @@ export default class UsuariosController {
     this.usuariosService = new UsuariosService();
   }
 
-  listarUsuarios = async (req, res) => {
+  listarClientes = async (req, res) => {
     try {
-      const usuarios = await this.usuariosService.listarUsuarios();
-      if (!usuarios) {
+      const clientes = await this.usuariosService.listarClientes();
+      if (!clientes) {
         return res
           .status(404)
-          .json(mensajeError404("No se encontraron usuarios"));
+          .json(mensajeError404("No se encontraron clientes"));
       }
       return res.status(200).json({
         estado: "success",
-        usuarios,
+        clientes,
       });
     } catch (error) {
       return res.status(500).json(mensajeError500(error));

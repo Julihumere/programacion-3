@@ -10,6 +10,13 @@ export default class Usuarios {
     return usuarios;
   };
 
+  buscarClientes = async () => {
+    const sql = "SELECT * FROM usuarios WHERE tipo_usuario = 3 AND activo = 1";
+    const [clientes] = await conexion.execute(sql);
+    if (clientes.length === 0) return null;
+    return clientes;
+  };
+
   buscarPorId = async (id) => {
     const sql = "SELECT * FROM usuarios WHERE usuario_id = ? AND activo = 1";
     const [usuario] = await conexion.execute(sql, [id]);

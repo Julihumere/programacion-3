@@ -8,10 +8,10 @@ const usuariosController = new UsuariosController();
 const router = Router();
 
 router.get(
-  "/ver_usuarios",
+  "/ver_clientes",
   validarSesion,
   esAdmin,
-  usuariosController.listarUsuarios
+  usuariosController.listarClientes
 );
 
 export { router };

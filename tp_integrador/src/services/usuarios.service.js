@@ -5,8 +5,8 @@ export default class UsuariosService {
     this.usuarios = new Usuarios();
   }
 
-  listarUsuarios = async () => {
-    return await this.usuarios.buscarTodos();
+  listarClientes = async () => {
+    return await this.usuarios.buscarClientes();
   };
 
   obtenerUsuario = async (id) => {
