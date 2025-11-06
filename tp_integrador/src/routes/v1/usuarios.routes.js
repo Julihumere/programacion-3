@@ -8,7 +8,7 @@ const usuariosController = new UsuariosController();
 const router = Router();
 
 router.get(
-  "/ver_clientes",
+  "/listar_clientes",
   validarSesion,
   esEmpleadoOAdmin,
   usuariosController.listarClientes

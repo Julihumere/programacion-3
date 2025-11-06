@@ -13,6 +13,7 @@ import { router as v1ServiciosRouter } from "./routes/v1/servicios.routes.js";
 import { router as v1TurnosRouter } from "./routes/v1/turnos.routes.js";
 import { router as v1ReservasRouter } from "./routes/v1/reservas.routes.js";
 import { router as v1AuthRouter } from "./routes/v1/auth.routes.js";
+import { router as v1InformesRouter } from "./routes/v1/informes.routes.js";
 
 const hbs = expressHandlebars.create({
   defaultLayout: "main",
@@ -54,5 +55,6 @@ app.use("/api/v1/servicios", v1ServiciosRouter);
 app.use("/api/v1/turnos", v1TurnosRouter);
 app.use("/api/v1/reservas", v1ReservasRouter);
 app.use("/api/v1/auth", v1AuthRouter);
+app.use("/api/v1/informes", v1InformesRouter);
 
 export default app;
