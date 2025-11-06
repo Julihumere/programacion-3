@@ -30,8 +30,6 @@ export default class ReservasService {
   };
 
   listarReservasPorUsuario = async (usuario_id) => {
-    console.log("listarReservasPorUsuario");
-
     return await this.reservas.buscarPorUsuario(usuario_id);
   };
 

@@ -53,7 +53,6 @@ export default class Reservas {
   };
 
   buscarPorUsuario = async (usuario_id) => {
-    console.log("buscarPorUsuario", usuario_id);
     const sql = `
       SELECT 
         r.*,
@@ -68,8 +67,6 @@ export default class Reservas {
       ORDER BY r.fecha_reserva DESC, t.hora_desde ASC
     `;
     const [reservas] = await conexion.execute(sql, [usuario_id]);
-
-    console.log("reservas", reservas);
 
     if (reservas.length === 0) return null;
 

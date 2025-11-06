@@ -1,9 +1,5 @@
 const esEmpleadoOAdmin = (req, res, next) => {
-  console.log("req.user", req.user);
-
   const { tipo_usuario } = req.user.usuario;
-
-  console.log("tipo_usuario", tipo_usuario);
 
   // tipo_usuario: 3=Cliente, 2=Empleado, 1=Administrador
   if (tipo_usuario === 3) {
