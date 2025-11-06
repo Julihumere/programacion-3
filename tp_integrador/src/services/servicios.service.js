@@ -1,4 +1,4 @@
-import Servicios from "../config/servicios.js";
+import Servicios from "../db/servicios.js";
 import apicache from "apicache";
 
 export default class ServiciosService {

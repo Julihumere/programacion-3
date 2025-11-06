@@ -1,4 +1,4 @@
-import Turnos from "../config/turnos.js";
+import Turnos from "../db/turnos.js";
 import apicache from "apicache";
 
 export default class TurnosService {

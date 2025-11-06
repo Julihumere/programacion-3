@@ -223,5 +223,3 @@ Algunos endpoints requieren permisos especiales:
 
 - Julio Cesar Humere
 - Lautaro Oyuela
-- Emiliano Benítez
-- Dario Gómez

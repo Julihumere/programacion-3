@@ -1,4 +1,4 @@
-import Salones from "../config/salones.js";
+import Salones from "../db/salones.js";
 import NotificacionesService from "./notificaciones.service.js";
 import apicache from "apicache";
 

@@ -3,6 +3,7 @@ import usuariosRouter from "./v1/routes/usuarios.routes.js";
 import { router as v1SalonesRouter } from "./v1/routes/salones.routes.js";
 import { router as v1ServiciosRouter } from "./v1/routes/servicios.routes.js";
 import turnosRouter from "./v1/routes/turnos.routes.js";
+import { router as v1ReservasRouter } from "./v1/routes/reservas.routes.js";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
@@ -49,5 +50,6 @@ app.use("/api/v1/usuarios", usuariosRouter);
 app.use("/api/v1/salones", v1SalonesRouter);
 app.use("/api/v1/servicios", v1ServiciosRouter);
 app.use("/api/v1/turnos", turnosRouter);
+app.use("/api/v1/reservas", v1ReservasRouter);
 
 export default app;

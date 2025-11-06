@@ -1,4 +1,4 @@
-import { conexion } from "./db.js";
+import { conexion } from "../db/db.js";
 
 export default class Turnos {
   buscarTodos = async () => {

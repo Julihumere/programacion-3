@@ -13,8 +13,8 @@
 
 ### Reservas
 
-- [ ] Crear reserva // LAUCHA
-- [ ] Listar mis reservas // LAUCHA
+- [x] Crear reserva // LAUCHA
+- [x] Listar mis reservas // LAUCHA
 
 ### Consultas (solo lectura)
 
@@ -24,7 +24,7 @@
 
 ### Notificaciones
 
-- [ ] Recibir notificación automática cuando se confirma una reserva // LAUCHA
+- [x] Recibir notificación automática cuando se confirma una reserva // LAUCHA
 
 ---
 
@@ -36,7 +36,7 @@
 
 ### Consultas
 
-- [ ] Listar reservas (todas) // LAUCHA
+- [x] Listar reservas (todas) // LAUCHA
 - [ ] Listar clientes // LAUCHA
 
 ### BREAD - Salones
@@ -73,11 +73,11 @@
 
 ### BREAD - Reservas
 
-- [ ] **B**rowse - Listar todas las reservas // LAUCHA
-- [ ] **R**ead - Ver detalle de una reserva // LAUCHA
-- [ ] **E**dit - Editar una reserva existente // LAUCHA
-- [ ] **A**dd - Crear nueva reserva // LAUCHA
-- [ ] **D**elete - Eliminar una reserva // LAUCHA
+- [x] **B**rowse - Listar todas las reservas // LAUCHA
+- [x] **R**ead - Ver detalle de una reserva // LAUCHA
+- [x] **E**dit - Editar una reserva existente // LAUCHA
+- [x] **A**dd - Crear nueva reserva // LAUCHA
+- [x] **D**elete - Eliminar una reserva // LAUCHA
 
 ### BREAD - Salones
 
@@ -120,7 +120,7 @@
 
 ### Notificaciones
 
-- [ ] Recibir notificación automática cuando se realiza una reserva // LAUCHA
+- [x] Recibir notificación automática cuando se realiza una reserva // LAUCHA
 
 ---
 

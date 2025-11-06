@@ -4,7 +4,6 @@ import {
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
-import jwt from "jsonwebtoken";
 
 export default class UsuariosController {
   constructor() {
@@ -107,22 +106,21 @@ export default class UsuariosController {
   iniciarSesion = async (req, res) => {
     try {
       const { nombre_usuario, contrasenia } = req.body;
-      const usuario = await this.usuariosService.iniciarSesion(
+      const resultado = await this.usuariosService.iniciarSesion(
         nombre_usuario,
         contrasenia
       );
-      if (!usuario) {
+
+      if (!resultado) {
         return res
           .status(400)
-          .json(mensajeError400("No se pudo iniciar sesión"));
+          .json(mensajeError400("Credenciales incorrectas"));
       }
       return res.status(200).json({
-        token: jwt.sign({ id: usuario.usuario_id }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        }),
         estado: "success",
         mensaje: "Sesión iniciada correctamente",
-        usuario,
+        token: resultado.token,
+        usuario: resultado.usuario,
       });
     } catch (error) {
       return res.status(500).json(mensajeError500(error));

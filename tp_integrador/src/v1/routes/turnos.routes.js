@@ -1,6 +1,6 @@
 import { Router } from "express";
 import TurnosController from "../../controllers/turnos.controller.js";
-import esAdmin from "../../utils/esAdmin.js";
+import esAdmin from "../../middlewares/esAdmin.js";
 import validarSesion from "../../middlewares/validarSesion.js";
 import { validarCrearTurno } from "../../middlewares/validarCampos.js";
 import apicache from "apicache";

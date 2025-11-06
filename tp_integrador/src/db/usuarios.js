@@ -1,5 +1,4 @@
-import { conexion } from "./db.js";
-import bcrypt from "bcrypt";
+import { conexion } from "../db/db.js";
 
 export default class Usuarios {
   buscarTodos = async () => {
@@ -20,27 +19,26 @@ export default class Usuarios {
     return usuario[0];
   };
 
+  buscarPorNombreUsuario = async (nombre_usuario) => {
+    const sql = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND activo = 1";
+    const [usuario] = await conexion.execute(sql, [nombre_usuario]);
+
+    if (usuario.length === 0) return null;
+
+    return usuario[0];
+  };
+
   crear = async (usuario) => {
-    const {
-      nombre,
-      apellido,
-      nombre_usuario,
-      contrasenia,
-      tipo_usuario,
-      celular,
-      foto,
-    } = usuario;
-    const encriptarContrasenia = await bcrypt.hash(contrasenia, 10);
     const sql =
       "INSERT INTO usuarios (nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
     const [result] = await conexion.execute(sql, [
-      nombre,
-      apellido,
-      nombre_usuario,
-      encriptarContrasenia,
-      tipo_usuario,
-      celular,
-      foto,
+      usuario.nombre,
+      usuario.apellido,
+      usuario.nombre_usuario,
+      usuario.contrasenia, // Ya debe venir encriptada desde el Service
+      usuario.tipo_usuario,
+      usuario.celular,
+      usuario.foto,
     ]);
 
     if (result.affectedRows === undefined) return null;
@@ -71,18 +69,5 @@ export default class Usuarios {
     if (result.affectedRows === 0) return null;
 
     return result;
-  };
-
-  iniciarSesion = async (nombre_usuario, contrasenia) => {
-    const sql =
-      "SELECT * FROM usuarios WHERE nombre_usuario = ? AND activo = 1";
-    const [usuario] = await conexion.execute(sql, [nombre_usuario]);
-    if (usuario.length === 0) return null;
-    const contraseniaValida = await bcrypt.compare(
-      contrasenia,
-      usuario[0].contrasenia
-    );
-    if (!contraseniaValida) return null;
-    return usuario[0];
   };
 }

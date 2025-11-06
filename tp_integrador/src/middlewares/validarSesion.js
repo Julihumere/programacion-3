@@ -16,7 +16,7 @@ const validarSesion = (req, res, next) => {
       });
     }
 
-    req.usuario = user;
+    req.user = user;
     next();
   })(req, res, next);
 };

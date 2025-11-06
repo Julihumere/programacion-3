@@ -53,3 +53,12 @@ export const validarCrearTurno = [
   check("hora_hasta", "La hora de fin es requerida").notEmpty(),
   manejarErroresValidacion,
 ];
+
+export const validarCrearReserva = [
+  check("fecha_reserva", "La fecha de reserva es requerida").isDate().notEmpty(),
+  check("salon_id", "El ID del salón es requerido").isInt({ min: 1 }).notEmpty(),
+  check("turno_id", "El ID del turno es requerido").isInt({ min: 1 }).notEmpty(),
+  check("usuario_id", "El ID del usuario es requerido").optional().isInt({ min: 1 }),
+  check("servicios", "Los servicios deben ser un array").optional().isArray(),
+  manejarErroresValidacion,
+];

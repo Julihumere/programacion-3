@@ -5,10 +5,14 @@ export const emails = [
   },
   {
     id: 2,
-    plantilla: "plantillaServicio.hbs",
+    plantilla: "plantillaReservaAdmin.hbs",
   },
   {
     id: 3,
+    plantilla: "plantillaServicio.hbs",
+  },
+  {
+    id: 4,
     plantilla: "plantillaTurno.hbs",
   },
 ];

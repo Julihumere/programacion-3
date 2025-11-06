@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ServiciosController from "../../controllers/servicios.controller.js";
-import esAdmin from "../../utils/esAdmin.js";
+import esAdmin from "../../middlewares/esAdmin.js";
 import validarSesion from "../../middlewares/validarSesion.js";
 import { validarCrearServicio } from "../../middlewares/validarCampos.js";
 import apicache from "apicache";
