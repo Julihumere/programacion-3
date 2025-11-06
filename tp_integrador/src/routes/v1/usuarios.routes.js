@@ -1,7 +1,7 @@
 import UsuariosController from "../../controllers/usuarios.controller.js";
 import { Router } from "express";
 import validarSesion from "../../middlewares/validarSesion.js";
-import esAdmin from "../../middlewares/esAdmin.js";
+import esEmpleadoOAdmin from "../../middlewares/esEmpleadoOAdmin.js";
 
 const usuariosController = new UsuariosController();
 
@@ -10,7 +10,7 @@ const router = Router();
 router.get(
   "/ver_clientes",
   validarSesion,
-  esAdmin,
+  esEmpleadoOAdmin,
   usuariosController.listarClientes
 );
 

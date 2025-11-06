@@ -35,6 +35,7 @@ router.post(
   "/",
   validarCrearReserva,
   validarSesion,
+  esAdmin,
   reservasController.crearReserva
 );
 
