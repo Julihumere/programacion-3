@@ -45,24 +45,6 @@ export default class UsuariosController {
     }
   };
 
-  crearUsuario = async (req, res) => {
-    try {
-      const usuario = await this.usuariosService.crearUsuario(req.body);
-      if (!usuario) {
-        return res
-          .status(400)
-          .json(mensajeError400("No se pudo crear el usuario"));
-      }
-      return res.status(201).json({
-        estado: "success",
-        mensaje: "Usuario creado correctamente",
-        usuario,
-      });
-    } catch (error) {
-      return res.status(500).json(mensajeError500(error));
-    }
-  };
-
   actualizarUsuario = async (req, res) => {
     try {
       const { id } = req.params;
@@ -98,29 +80,6 @@ export default class UsuariosController {
         estado: "success",
         mensaje: "Usuario eliminado correctamente",
         usuario,
-      });
-    } catch (error) {
-      return res.status(500).json(mensajeError500(error));
-    }
-  };
-  iniciarSesion = async (req, res) => {
-    try {
-      const { nombre_usuario, contrasenia } = req.body;
-      const resultado = await this.usuariosService.iniciarSesion(
-        nombre_usuario,
-        contrasenia
-      );
-
-      if (!resultado) {
-        return res
-          .status(400)
-          .json(mensajeError400("Credenciales incorrectas"));
-      }
-      return res.status(200).json({
-        estado: "success",
-        mensaje: "Sesión iniciada correctamente",
-        token: resultado.token,
-        usuario: resultado.usuario,
       });
     } catch (error) {
       return res.status(500).json(mensajeError500(error));

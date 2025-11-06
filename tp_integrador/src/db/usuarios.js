@@ -19,33 +19,6 @@ export default class Usuarios {
     return usuario[0];
   };
 
-  buscarPorNombreUsuario = async (nombre_usuario) => {
-    const sql = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND activo = 1";
-    const [usuario] = await conexion.execute(sql, [nombre_usuario]);
-
-    if (usuario.length === 0) return null;
-
-    return usuario[0];
-  };
-
-  crear = async (usuario) => {
-    const sql =
-      "INSERT INTO usuarios (nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const [result] = await conexion.execute(sql, [
-      usuario.nombre,
-      usuario.apellido,
-      usuario.nombre_usuario,
-      usuario.contrasenia, // Ya debe venir encriptada desde el Service
-      usuario.tipo_usuario,
-      usuario.celular,
-      usuario.foto,
-    ]);
-
-    if (result.affectedRows === undefined) return null;
-
-    return result;
-  };
-
   actualizar = async (id, usuario) => {
     const campos = Object.keys(usuario);
     const valores = Object.values(usuario);

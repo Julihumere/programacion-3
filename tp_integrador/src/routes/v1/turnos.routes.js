@@ -36,4 +36,4 @@ router.patch("/:id", validarSesion, esAdmin, turnosController.actualizarTurno);
 
 router.delete("/:id", validarSesion, esAdmin, turnosController.eliminarTurno);
 
-export default router;
+export { router };
