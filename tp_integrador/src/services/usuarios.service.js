@@ -1,6 +1,4 @@
 import Usuarios from "../db/usuarios.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 export default class UsuariosService {
   constructor() {

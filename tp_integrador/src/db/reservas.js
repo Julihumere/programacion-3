@@ -53,6 +53,7 @@ export default class Reservas {
   };
 
   buscarPorUsuario = async (usuario_id) => {
+    console.log("buscarPorUsuario", usuario_id);
     const sql = `
       SELECT 
         r.*,
@@ -67,6 +68,8 @@ export default class Reservas {
       ORDER BY r.fecha_reserva DESC, t.hora_desde ASC
     `;
     const [reservas] = await conexion.execute(sql, [usuario_id]);
+
+    console.log("reservas", reservas);
 
     if (reservas.length === 0) return null;
 
@@ -145,14 +148,19 @@ export default class Reservas {
       INSERT INTO reservas_servicios (reserva_id, servicio_id, importe)
       VALUES (?, ?, ?)
     `;
-    const [result] = await conexion.execute(sql, [reserva_id, servicio_id, importe]);
+    const [result] = await conexion.execute(sql, [
+      reserva_id,
+      servicio_id,
+      importe,
+    ]);
 
     return result;
   };
 
-  eliminarServicioReserva = async (reserva_servicio_id) => {
-    const sql = "DELETE FROM reservas_servicios WHERE reserva_servicio_id = ?";
-    const [result] = await conexion.execute(sql, [reserva_servicio_id]);
+  eliminarServicioReserva = async (reserva_id, servicio_id) => {
+    const sql =
+      "DELETE FROM reservas_servicios WHERE reserva_id = ? AND servicio_id = ?";
+    const [result] = await conexion.execute(sql, [reserva_id, servicio_id]);
 
     return result;
   };

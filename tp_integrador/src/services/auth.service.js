@@ -21,13 +21,14 @@ export default class AuthService {
 
     const usuarioInsertado = await this.auth.buscarPorId(nuevoUsuario.insertId);
     if (!usuarioInsertado) return null;
+    const { contrasenia: _, ...usuarioSinContrasenia } = usuarioInsertado;
 
     const token = jwt.sign(
-      { usuario_id: usuarioInsertado.usuario_id },
+      { usuario: usuarioSinContrasenia },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    const { contrasenia: _, ...usuarioSinContrasenia } = usuarioInsertado;
+
     return {
       token,
       usuario: usuarioSinContrasenia,
@@ -43,12 +44,13 @@ export default class AuthService {
     );
     if (!contraseniaValida) return null;
 
+    const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
+
     const token = jwt.sign(
-      { usuario_id: usuario.usuario_id },
+      { usuario: usuarioSinContrasenia },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
     return {
       token,
       usuario: usuarioSinContrasenia,

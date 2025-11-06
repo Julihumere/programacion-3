@@ -5,7 +5,6 @@ import {
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
-import apicache from "apicache";
 
 export default class ReservasController {
   constructor() {
@@ -33,8 +32,10 @@ export default class ReservasController {
 
   listarMisReservas = async (req, res) => {
     try {
-      const usuario_id = req.user.usuario_id;
-      const reservas = await this.reservasService.listarReservasPorUsuario(usuario_id);
+      const usuario_id = req.user.usuario.usuario_id;
+      const reservas = await this.reservasService.listarReservasPorUsuario(
+        usuario_id
+      );
 
       if (!reservas) {
         return res
@@ -73,22 +74,22 @@ export default class ReservasController {
   crearReserva = async (req, res) => {
     try {
       // Si es un cliente, forzar que la reserva sea para su propio usuario
-      if (req.user.tipo_usuario === 1) {
-        req.body.usuario_id = req.user.usuario_id;
+      if (req.user.usuario.tipo_usuario === 1) {
+        req.body.usuario_id = req.user.usuario.usuario_id;
       }
 
       const result = await this.reservasService.crearReserva(req.body);
-      
+
       if (!result) {
         return res
           .status(400)
           .json(mensajeError400("No se pudo crear la reserva"));
       }
 
-      apicache.clear();
-
       // Obtener la reserva completa para enviar notificación
-      const reserva = await this.reservasService.obtenerReserva(result.reserva_id);
+      const reserva = await this.reservasService.obtenerReserva(
+        result.reserva_id
+      );
 
       // Enviar notificación al administrador
       await enviarNotificacion(
@@ -96,7 +97,7 @@ export default class ReservasController {
           titulo: "Nueva Reserva Recibida",
           reserva_id: result.reserva_id,
           fecha_reserva: req.body.fecha_reserva,
-          cliente: `${req.user.nombre} ${req.user.apellido}`,
+          cliente: `${req.user.usuario.nombre} ${req.user.usuario.apellido}`,
           salon: reserva.salon_titulo,
           turno: `${reserva.hora_desde} - ${reserva.hora_hasta}`,
           importe_total: reserva.importe_total,
@@ -121,14 +122,12 @@ export default class ReservasController {
         req.params.id,
         req.body
       );
-      
+
       if (!reserva) {
         return res
           .status(400)
           .json(mensajeError400("No se pudo actualizar la reserva"));
       }
-
-      apicache.clear();
 
       return res.status(200).json({
         estado: "success",
@@ -143,14 +142,12 @@ export default class ReservasController {
   eliminarReserva = async (req, res) => {
     try {
       const reserva = await this.reservasService.eliminarReserva(req.params.id);
-      
+
       if (!reserva) {
         return res
           .status(400)
           .json(mensajeError400("No se pudo eliminar la reserva"));
       }
-
-      apicache.clear();
 
       return res.status(200).json({
         estado: "success",
@@ -164,7 +161,9 @@ export default class ReservasController {
   // Métodos para gestionar servicios de una reserva
   obtenerServiciosReserva = async (req, res) => {
     try {
-      const servicios = await this.reservasService.obtenerServiciosReserva(req.params.id);
+      const servicios = await this.reservasService.obtenerServiciosReserva(
+        req.params.id
+      );
 
       if (!servicios) {
         return res
@@ -184,13 +183,11 @@ export default class ReservasController {
   agregarServicioReserva = async (req, res) => {
     try {
       const { servicio_id } = req.body;
-      
+
       await this.reservasService.agregarServicioReserva(
         req.params.id,
         servicio_id
       );
-
-      apicache.clear();
 
       return res.status(201).json({
         estado: "success",
@@ -203,9 +200,11 @@ export default class ReservasController {
 
   eliminarServicioReserva = async (req, res) => {
     try {
-      await this.reservasService.eliminarServicioReserva(req.params.servicio_id);
-
-      apicache.clear();
+      const { reserva_id, servicio_id } = req.params;
+      await this.reservasService.eliminarServicioReserva(
+        reserva_id,
+        servicio_id
+      );
 
       return res.status(200).json({
         estado: "success",

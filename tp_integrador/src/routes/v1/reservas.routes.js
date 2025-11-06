@@ -4,8 +4,6 @@ import esAdmin from "../../middlewares/esAdmin.js";
 import esEmpleadoOAdmin from "../../middlewares/esEmpleadoOAdmin.js";
 import validarSesion from "../../middlewares/validarSesion.js";
 import { validarCrearReserva } from "../../middlewares/validarCampos.js";
-import apicache from "apicache";
-const cache = apicache.middleware;
 
 const reservasController = new ReservasController();
 
@@ -15,7 +13,6 @@ const router = Router();
 
 router.get(
   "/",
-  cache("5 minutes"),
   validarSesion,
   esEmpleadoOAdmin,
   reservasController.listarReservas
@@ -23,14 +20,12 @@ router.get(
 
 router.get(
   "/mis-reservas",
-  cache("5 minutes"),
   validarSesion,
   reservasController.listarMisReservas
 );
 
 router.get(
   "/:id",
-  cache("5 minutes"),
   validarSesion,
   esEmpleadoOAdmin,
   reservasController.obtenerReserva
@@ -74,7 +69,7 @@ router.post(
 );
 
 router.delete(
-  "/:id/servicios/:servicio_id",
+  "/:reserva_id/servicios/:servicio_id",
   validarSesion,
   esAdmin,
   reservasController.eliminarServicioReserva

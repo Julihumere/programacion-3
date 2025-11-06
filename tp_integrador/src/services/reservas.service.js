@@ -17,19 +17,21 @@ export default class ReservasService {
 
   obtenerReserva = async (reserva_id) => {
     const reserva = await this.reservas.buscarPorId(reserva_id);
-    
+
     if (!reserva) return null;
 
     // Obtener servicios asociados a la reserva
     const servicios = await this.reservas.obtenerServiciosReserva(reserva_id);
-    
+
     return {
       ...reserva,
-      servicios: servicios || []
+      servicios: servicios || [],
     };
   };
 
   listarReservasPorUsuario = async (usuario_id) => {
+    console.log("listarReservasPorUsuario");
+
     return await this.reservas.buscarPorUsuario(usuario_id);
   };
 
@@ -48,7 +50,7 @@ export default class ReservasService {
 
     // Establecer importe_salon con el precio del salón
     reserva.importe_salon = salon.importe;
-    
+
     // Calcular importe total inicial (solo salón)
     let importe_total = parseFloat(salon.importe);
 
@@ -67,7 +69,7 @@ export default class ReservasService {
 
     // Crear la reserva
     const result = await this.reservas.crear(reserva);
-    
+
     if (!result) return null;
 
     const reserva_id = result.insertId;
@@ -134,6 +136,11 @@ export default class ReservasService {
       throw new Error("El servicio especificado no existe");
     }
 
+    const servicios = await this.reservas.obtenerServiciosReserva(reserva_id);
+    if (servicios.some((s) => s.servicio_id === servicio_id)) {
+      throw new Error("El servicio ya existe en la reserva");
+    }
+
     // Agregar el servicio a la reserva
     await this.reservas.agregarServicioReserva(
       reserva_id,
@@ -142,15 +149,16 @@ export default class ReservasService {
     );
 
     // Actualizar el importe total de la reserva
-    const nuevoImporteTotal = parseFloat(reserva.importe_total) + parseFloat(servicio.importe);
+    const nuevoImporteTotal =
+      parseFloat(reserva.importe_total) + parseFloat(servicio.importe);
     await this.reservas.actualizar(reserva_id, {
-      importe_total: nuevoImporteTotal
+      importe_total: nuevoImporteTotal,
     });
 
     return { success: true };
   };
 
-  eliminarServicioReserva = async (reserva_servicio_id) => {
-    return await this.reservas.eliminarServicioReserva(reserva_servicio_id);
+  eliminarServicioReserva = async (reserva_id, servicio_id) => {
+    return await this.reservas.eliminarServicioReserva(reserva_id, servicio_id);
   };
 }
