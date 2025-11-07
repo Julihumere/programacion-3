@@ -46,13 +46,7 @@ export default class AuthService {
 
     const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
 
-    const token = jwt.sign(
-      { usuario: usuarioSinContrasenia },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
     return {
-      token,
       usuario: usuarioSinContrasenia,
     };
   };

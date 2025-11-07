@@ -10,7 +10,21 @@ export default class UsuariosController {
     this.usuariosService = new UsuariosService();
   }
 
-  listarClientes = async (req, res) => {
+  listarUsuarios = async (_req, res) => {
+    try {
+      const usuarios = await this.usuariosService.buscarTodos();
+      if (!usuarios) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontraron usuarios"));
+      }
+      return res.status(200).json({ estado: "success", usuarios });
+    } catch (error) {
+      return res.status(500).json(mensajeError500(error));
+    }
+  };
+
+  listarClientes = async (_req, res) => {
     try {
       const clientes = await this.usuariosService.listarClientes();
       if (!clientes) {
@@ -47,11 +61,11 @@ export default class UsuariosController {
 
   actualizarUsuario = async (req, res) => {
     try {
+      const foto = req.file ? req.file.filename : null;
+      const datos = { ...req.body, foto };
+
       const { id } = req.params;
-      const usuario = await this.usuariosService.actualizarUsuario(
-        id,
-        req.body
-      );
+      const usuario = await this.usuariosService.actualizarUsuario(id, datos);
       if (!usuario) {
         return res
           .status(400)

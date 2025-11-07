@@ -1,9 +1,9 @@
 import { Router } from "express";
 import SalonesController from "../../controllers/salones.controller.js";
-import esAdmin from "../../middlewares/esAdmin.js";
 import validarSesion from "../../middlewares/validarSesion.js";
 import { validarCrearSalon } from "../../middlewares/validarCampos.js";
 import apicache from "apicache";
+import { autorizarUsuarios } from "../../middlewares/autorizarUsuarios.js";
 const cache = apicache.middleware;
 
 const salonesController = new SalonesController();
@@ -14,6 +14,7 @@ router.get(
   "/",
   cache("5 minutes"),
   validarSesion,
+  autorizarUsuarios([1, 2, 3]),
   salonesController.listarSalones
 );
 
@@ -21,6 +22,7 @@ router.get(
   "/:id",
   cache("5 minutes"),
   validarSesion,
+  autorizarUsuarios([1, 2, 3]),
   salonesController.obtenerSalon
 );
 
@@ -28,12 +30,22 @@ router.post(
   "/",
   validarCrearSalon,
   validarSesion,
-  esAdmin,
+  autorizarUsuarios([1, 2]),
   salonesController.crearSalon
 );
 
-router.patch("/:id", validarSesion, esAdmin, salonesController.actualizarSalon);
+router.patch(
+  "/:id",
+  validarSesion,
+  autorizarUsuarios([1, 2]),
+  salonesController.actualizarSalon
+);
 
-router.delete("/:id", validarSesion, esAdmin, salonesController.eliminarSalon);
+router.delete(
+  "/:id",
+  validarSesion,
+  autorizarUsuarios([1, 2]),
+  salonesController.eliminarSalon
+);
 
 export { router };

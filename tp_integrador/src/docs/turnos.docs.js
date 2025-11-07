@@ -55,7 +55,7 @@
  * @swagger
  * /turnos:
  *   post:
- *     summary: Crear un nuevo turno (solo administradores)
+ *     summary: Crear un nuevo turno (Solo Administradores y Empleados)
  *     tags: [Turnos]
  *     security:
  *       - bearerAuth: []
@@ -86,7 +86,7 @@
  * @swagger
  * /turnos/{id}:
  *   patch:
- *     summary: Actualizar un turno (solo administradores)
+ *     summary: Actualizar un turno (Solo Administradores y Empleados)
  *     tags: [Turnos]
  *     security:
  *       - bearerAuth: []
@@ -138,7 +138,7 @@
  * @swagger
  * /turnos/{id}:
  *   delete:
- *     summary: Eliminar un turno (solo administradores)
+ *     summary: Eliminar un turno (Solo Administradores y Empleados)
  *     tags: [Turnos]
  *     security:
  *       - bearerAuth: []

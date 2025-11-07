@@ -15,4 +15,8 @@ export const emails = [
     id: 4,
     plantilla: "plantillaTurno.hbs",
   },
+  {
+    id: 5,
+    plantilla: "plantillaReserva.hbs",
+  },
 ];

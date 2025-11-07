@@ -17,7 +17,7 @@ export default class Auth {
       usuario.apellido,
       usuario.nombre_usuario,
       usuario.contrasenia, // Ya debe venir encriptada desde el Service
-      usuario.tipo_usuario,
+      usuario.tipo_usuario ?? 3, // Por defecto, el tipo de usuario es 3 (Cliente)
       usuario.celular,
       usuario.foto,
     ]);

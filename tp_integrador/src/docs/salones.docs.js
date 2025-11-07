@@ -55,7 +55,7 @@
  * @swagger
  * /salones:
  *   post:
- *     summary: Crear un nuevo salón (solo administradores)
+ *     summary: Crear un nuevo salón (Solo Administradores y Empleados)
  *     tags: [Salones]
  *     security:
  *       - bearerAuth: []
@@ -86,7 +86,7 @@
  * @swagger
  * /salones/{id}:
  *   patch:
- *     summary: Actualizar un salón (solo administradores)
+ *     summary: Actualizar un salón (Solo Administradores y Empleados)
  *     tags: [Salones]
  *     security:
  *       - bearerAuth: []
@@ -133,7 +133,7 @@
  * @swagger
  * /salones/{id}:
  *   delete:
- *     summary: Eliminar un salón (solo administradores)
+ *     summary: Eliminar un salón (Solo Administradores y Empleados)
  *     tags: [Salones]
  *     security:
  *       - bearerAuth: []

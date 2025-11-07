@@ -94,16 +94,50 @@
  * @swagger
  * /reservas:
  *   post:
- *     summary: Crear una nueva reserva
+ *     summary: Crear una nueva reserva (Administradores y Clientes)
  *     tags: [Reservas]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/CrearReserva'
+ *             type: object
+ *             required: ["fecha_reserva", "salon_id", "turno_id"]
+ *             properties:
+ *               fecha_reserva:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de la reserva (YYYY-MM-DD)
+ *                 example: "2025-12-25"
+ *               salon_id:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: ID del salón a reservar
+ *                 example: 1
+ *               turno_id:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: ID del turno a reservar
+ *                 example: 2
+ *               usuario_id:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: ID del usuario (solo para administradores, clientes lo tienen automático)
+ *                 example: 5
+ *               tematica:
+ *                 type: string
+ *                 description: Temática de la fiesta (opcional)
+ *                 example: "Superhéroes"
+ *               foto_cumpleaniero:
+ *                 type: string
+ *                 format: binary
+ *                 description: Foto del cumpleañero (opcional)
+ *               servicios:
+ *                 type: string
+ *                 description: Array de IDs de servicios adicionales en formato JSON (opcional)
+ *                 example: "[2, 3, 5]"
  *     responses:
  *       201:
  *         description: Reserva creada exitosamente
@@ -124,6 +158,8 @@
  *         description: Datos inválidos o turno no disponible
  *       401:
  *         description: No autenticado
+ *       403:
+ *         description: No autorizado
  */
 
 /**
@@ -253,7 +289,7 @@
  * @swagger
  * /reservas/{id}/servicios:
  *   post:
- *     summary: Agregar un servicio a una reserva (Solo Administradores)
+ *     summary: Agregar un servicio a una reserva (Solo Administradores y Empleados)
  *     tags: [Reservas]
  *     security:
  *       - bearerAuth: []
@@ -289,22 +325,22 @@
  *       401:
  *         description: No autenticado
  *       403:
- *         description: No autorizado (solo administradores)
+ *         description: No autorizado (solo administradores y empleados)
  *       404:
  *         description: Reserva o servicio no encontrado
  */
 
 /**
  * @swagger
- * /reservas/{id}/servicios/{servicio_id}:
+ * /reservas/{reserva_id}/servicios/{servicio_id}:
  *   delete:
- *     summary: Eliminar un servicio de una reserva (Solo Administradores)
+ *     summary: Eliminar un servicio de una reserva (Solo Administradores y Empleados)
  *     tags: [Reservas]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: reserva_id
  *         required: true
  *         schema:
  *           type: integer
@@ -325,7 +361,7 @@
  *       401:
  *         description: No autenticado
  *       403:
- *         description: No autorizado (solo administradores)
+ *         description: No autorizado (solo administradores y empleados)
  *       404:
  *         description: Servicio no encontrado en la reserva
  */

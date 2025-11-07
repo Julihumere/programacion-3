@@ -54,7 +54,7 @@ const options = {
             },
             tipo_usuario: {
               type: "integer",
-              description: "Tipo de usuario: 1=Cliente, 2=Empleado, 3=Administrador",
+              description: "Tipo de usuario: 1=Administrador, 2=Empleado, 3=Cliente",
               example: 1,
               enum: [1, 2, 3],
             },
@@ -113,8 +113,8 @@ const options = {
             },
             tipo_usuario: {
               type: "integer",
-              description: "Tipo de usuario: 1=Cliente, 2=Empleado, 3=Administrador",
-              example: 1,
+              description: "Tipo de usuario: 1=Administrador, 2=Empleado, 3=Cliente",
+              example: 3,
               enum: [1, 2, 3],
             },
             celular: {

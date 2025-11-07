@@ -50,4 +50,12 @@ export default class Usuarios {
 
     return result;
   };
+
+  buscarEmailsAdministradores = async () => {
+    const sql =
+      "SELECT nombre_usuario FROM usuarios WHERE tipo_usuario = 1 AND activo = 1";
+    const [administradores] = await conexion.execute(sql);
+    if (administradores.length === 0) return [];
+    return administradores.map((administrador) => administrador.nombre_usuario);
+  };
 }

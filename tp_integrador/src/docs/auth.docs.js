@@ -1,9 +1,9 @@
 /**
  * @swagger
- * /usuarios/registrar:
+ * /auth/registrar:
  *   post:
  *     summary: Registrar un nuevo usuario
- *     tags: [Usuarios]
+ *     tags: [Autenticación]
  *     security: []
  *     requestBody:
  *       required: true
@@ -19,6 +19,9 @@
  *             schema:
  *               type: object
  *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
  *                 mensaje:
  *                   type: string
  *                   example: Usuario registrado correctamente
@@ -30,10 +33,10 @@
 
 /**
  * @swagger
- * /usuarios/iniciar_sesion:
+ * /auth/iniciar_sesion:
  *   post:
  *     summary: Iniciar sesión
- *     tags: [Usuarios]
+ *     tags: [Autenticación]
  *     security: []
  *     requestBody:
  *       required: true
@@ -47,13 +50,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                   description: Token JWT para autenticación
- *                 usuario:
- *                   $ref: '#/components/schemas/Usuario'
+ *               $ref: '#/components/schemas/LoginResponse'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       401:

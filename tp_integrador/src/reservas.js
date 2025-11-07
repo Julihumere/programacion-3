@@ -2,7 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
-import passport from "./config/passport.js";
+import passport from "passport";
+import { estrategiaJwt, validacion } from "./config/passport.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 import fs from "fs";
@@ -29,7 +30,9 @@ let accessLogFile = fs.createWriteStream("./access.log", {
 app.use(morgan("combined", { stream: accessLogFile })); // archivo .log
 app.use(morgan("combined")); // consola
 
-// Inicializar passport
+// Configuración de passport
+passport.use(estrategiaJwt);
+passport.use(validacion);
 app.use(passport.initialize());
 
 // Configuración de Handlebars

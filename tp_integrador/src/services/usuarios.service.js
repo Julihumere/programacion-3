@@ -5,6 +5,10 @@ export default class UsuariosService {
     this.usuarios = new Usuarios();
   }
 
+  buscarTodos = async () => {
+    return await this.usuarios.buscarTodos();
+  };
+
   listarClientes = async () => {
     return await this.usuarios.buscarClientes();
   };
@@ -21,5 +25,9 @@ export default class UsuariosService {
 
   eliminarUsuario = async (id) => {
     return await this.usuarios.eliminar(id);
+  };
+
+  obtenerEmailsAdministradores = async () => {
+    return await this.usuarios.buscarEmailsAdministradores();
   };
 }

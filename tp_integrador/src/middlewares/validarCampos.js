@@ -17,17 +17,19 @@ export const validarCrearUsuario = [
     .trim()
     .notEmpty(),
   check("contrasenia", "La contraseña es requerida").trim().notEmpty(),
-  check("tipo_usuario", "El tipo de usuario es requerido").trim().notEmpty(),
   manejarErroresValidacion,
 ];
 
 export const validarIniciarSesion = [
-  body("nombre_usuario")
+  check("nombre_usuario", "El nombre de usuario es requerido")
     .trim()
-    .notEmpty()
-    .withMessage("El nombre de usuario es requerido"),
+    .notEmpty(),
+  check(
+    "nombre_usuario",
+    "El nombre de usuario debe ser un email válido"
+  ).isEmail(),
 
-  body("contrasenia").notEmpty().withMessage("La contraseña es requerida"),
+  check("contrasenia", "La contraseña es requerida").trim().notEmpty(),
 
   manejarErroresValidacion,
 ];
@@ -55,10 +57,18 @@ export const validarCrearTurno = [
 ];
 
 export const validarCrearReserva = [
-  check("fecha_reserva", "La fecha de reserva es requerida").isDate().notEmpty(),
-  check("salon_id", "El ID del salón es requerido").isInt({ min: 1 }).notEmpty(),
-  check("turno_id", "El ID del turno es requerido").isInt({ min: 1 }).notEmpty(),
-  check("usuario_id", "El ID del usuario es requerido").optional().isInt({ min: 1 }),
+  check("fecha_reserva", "La fecha de reserva es requerida")
+    .isDate()
+    .notEmpty(),
+  check("salon_id", "El ID del salón es requerido")
+    .isInt({ min: 1 })
+    .notEmpty(),
+  check("turno_id", "El ID del turno es requerido")
+    .isInt({ min: 1 })
+    .notEmpty(),
+  check("usuario_id", "El ID del usuario es requerido")
+    .optional()
+    .isInt({ min: 1 }),
   check("servicios", "Los servicios deben ser un array").optional().isArray(),
   manejarErroresValidacion,
 ];

@@ -55,7 +55,7 @@
  * @swagger
  * /servicios:
  *   post:
- *     summary: Crear un nuevo servicio (solo administradores)
+ *     summary: Crear un nuevo servicio (Solo Administradores y Empleados)
  *     tags: [Servicios]
  *     security:
  *       - bearerAuth: []
@@ -86,7 +86,7 @@
  * @swagger
  * /servicios/{id}:
  *   patch:
- *     summary: Actualizar un servicio (solo administradores)
+ *     summary: Actualizar un servicio (Solo Administradores y Empleados)
  *     tags: [Servicios]
  *     security:
  *       - bearerAuth: []
@@ -131,7 +131,7 @@
  * @swagger
  * /servicios/{id}:
  *   delete:
- *     summary: Eliminar un servicio (solo administradores)
+ *     summary: Eliminar un servicio (Solo Administradores y Empleados)
  *     tags: [Servicios]
  *     security:
  *       - bearerAuth: []

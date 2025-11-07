@@ -1,55 +1,59 @@
 import { Router } from "express";
 import ReservasController from "../../controllers/reservas.controller.js";
-import esAdmin from "../../middlewares/esAdmin.js";
-import esEmpleadoOAdmin from "../../middlewares/esEmpleadoOAdmin.js";
 import validarSesion from "../../middlewares/validarSesion.js";
 import { validarCrearReserva } from "../../middlewares/validarCampos.js";
+import { autorizarUsuarios } from "../../middlewares/autorizarUsuarios.js";
+import multer from "multer";
+import { storageFotosCumpleaniero } from "../../config/multer.js";
 
 const reservasController = new ReservasController();
 
 const router = Router();
+const uploadFotosCumpleaniero = multer({ storage: storageFotosCumpleaniero });
 
 // ========== RUTAS BREAD DE RESERVAS ==========
 
 router.get(
   "/",
   validarSesion,
-  esEmpleadoOAdmin,
+  autorizarUsuarios([1, 2]),
   reservasController.listarReservas
 );
 
 router.get(
   "/mis-reservas",
   validarSesion,
+  autorizarUsuarios([3]),
   reservasController.listarMisReservas
 );
 
 router.get(
   "/:id",
   validarSesion,
-  esEmpleadoOAdmin,
+  autorizarUsuarios([1, 2]),
   reservasController.obtenerReserva
 );
 
 router.post(
   "/",
+  uploadFotosCumpleaniero.single("foto_cumpleaniero"),
   validarCrearReserva,
   validarSesion,
-  esAdmin,
+  autorizarUsuarios([1, 3]),
   reservasController.crearReserva
 );
 
 router.patch(
   "/:id",
   validarSesion,
-  esAdmin,
+  autorizarUsuarios([1]),
   reservasController.actualizarReserva
 );
 
 router.delete(
   "/:id",
   validarSesion,
-  esAdmin,
+  autorizarUsuarios([1]),
   reservasController.eliminarReserva
 );
 
@@ -58,21 +62,21 @@ router.delete(
 router.get(
   "/:id/servicios",
   validarSesion,
-  esEmpleadoOAdmin,
+  autorizarUsuarios([1, 2]),
   reservasController.obtenerServiciosReserva
 );
 
 router.post(
   "/:id/servicios",
   validarSesion,
-  esAdmin,
+  autorizarUsuarios([1, 2]),
   reservasController.agregarServicioReserva
 );
 
 router.delete(
   "/:reserva_id/servicios/:servicio_id",
   validarSesion,
-  esAdmin,
+  autorizarUsuarios([1, 2]),
   reservasController.eliminarServicioReserva
 );
 

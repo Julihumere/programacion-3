@@ -1,5 +1,11 @@
+import passport from "passport";
 import AuthService from "../services/auth.service.js";
-import { mensajeError500, mensajeError400 } from "../utils/mensajes.js";
+import jwt from "jsonwebtoken";
+import {
+  mensajeError500,
+  mensajeError400,
+  mensajeError401,
+} from "../utils/mensajes.js";
 
 export default class AuthController {
   constructor() {
@@ -26,26 +32,31 @@ export default class AuthController {
   };
 
   iniciarSesion = async (req, res) => {
-    try {
-      const { nombre_usuario, contrasenia } = req.body;
-      const resultado = await this.authService.iniciarSesion(
-        nombre_usuario,
-        contrasenia
-      );
-
-      if (!resultado) {
+    passport.authenticate("local", { session: false }, (err, user, info) => {
+      if (err || !user) {
         return res
-          .status(400)
-          .json(mensajeError400("Credenciales incorrectas"));
+          .status(401)
+          .json(mensajeError401("Credenciales incorrectas"));
       }
-      return res.status(200).json({
-        estado: "success",
-        mensaje: "Sesión iniciada correctamente",
-        token: resultado.token,
-        usuario: resultado.usuario,
+
+      req.login(user, { session: false }, (err) => {
+        if (err) {
+          return res.status(500).json(mensajeError500(err));
+        }
+
+        const token = jwt.sign(
+          { usuario: user.usuario },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+
+        return res.status(200).json({
+          estado: "success",
+          mensaje: "Sesión iniciada correctamente",
+          token: token,
+          usuario: user.usuario,
+        });
       });
-    } catch (error) {
-      return res.status(500).json(mensajeError500(error));
-    }
+    })(req, res);
   };
 }

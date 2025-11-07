@@ -29,7 +29,7 @@ const enviarNotificacion = async (notificacion, idPlantilla) => {
 
   const configEmail = {
     from: process.env.EMAIL_USER,
-    to: notificacion.destinatario,
+    to: notificacion.destinatario.join(","),
     subject: `🏷️ ${notificacion.titulo}`,
     html,
   };

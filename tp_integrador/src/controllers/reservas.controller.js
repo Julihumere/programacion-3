@@ -1,4 +1,5 @@
 import ReservasService from "../services/reservas.service.js";
+import UsuariosService from "../services/usuarios.service.js";
 import { enviarNotificacion } from "../utils/envioNotificacion.js";
 import {
   mensajeError500,
@@ -9,6 +10,7 @@ import {
 export default class ReservasController {
   constructor() {
     this.reservasService = new ReservasService();
+    this.usuariosService = new UsuariosService();
   }
 
   listarReservas = async (req, res) => {
@@ -32,7 +34,7 @@ export default class ReservasController {
 
   listarMisReservas = async (req, res) => {
     try {
-      const usuario_id = req.user.usuario.usuario_id;
+      const usuario_id = req.user.usuario_id;
       const reservas = await this.reservasService.listarReservasPorUsuario(
         usuario_id
       );
@@ -73,12 +75,10 @@ export default class ReservasController {
 
   crearReserva = async (req, res) => {
     try {
-      // Si es un cliente, forzar que la reserva sea para su propio usuario
-      if (req.user.usuario.tipo_usuario === 1) {
-        req.body.usuario_id = req.user.usuario.usuario_id;
-      }
+      const foto_cumpleaniero = req.file ? req.file.filename : null;
+      const datos = { ...req.body, foto_cumpleaniero };
 
-      const result = await this.reservasService.crearReserva(req.body);
+      const result = await this.reservasService.crearReserva(datos);
 
       if (!result) {
         return res
@@ -91,20 +91,63 @@ export default class ReservasController {
         result.reserva_id
       );
 
-      // Enviar notificación al administrador
-      await enviarNotificacion(
-        {
-          titulo: "Nueva Reserva Recibida",
-          reserva_id: result.reserva_id,
-          fecha_reserva: req.body.fecha_reserva,
-          cliente: `${req.user.usuario.nombre} ${req.user.usuario.apellido}`,
-          salon: reserva.salon_titulo,
-          turno: `${reserva.hora_desde} - ${reserva.hora_hasta}`,
-          importe_total: reserva.importe_total,
-          destinatario: process.env.EMAIL_DESTINATARIO,
-        },
-        2 // Tipo 2: Nueva reserva
+      const obtenerEmailsAdministradores =
+        await this.usuariosService.obtenerEmailsAdministradores();
+
+      const usuario = await this.usuariosService.obtenerUsuario(
+        req.body.usuario_id
       );
+      if (!obtenerEmailsAdministradores) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontraron administradores"));
+      }
+
+      if (!usuario) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontró el usuario"));
+      }
+      const destinatarioCliente = usuario.nombre_usuario;
+
+      // Promesas para enviar notificaciones
+      const promesasNotificaciones = [
+        await enviarNotificacion(
+          {
+            titulo: "Nueva Reserva Recibida",
+            reserva_id: result.reserva_id,
+            fecha_reserva: req.body.fecha_reserva,
+            cliente: `${req.user.usuario.nombre} ${req.user.usuario.apellido}`,
+            salon: reserva.salon_titulo,
+            turno: `${reserva.hora_desde} - ${reserva.hora_hasta}`,
+            importe_total: reserva.importe_total,
+            destinatario: obtenerEmailsAdministradores,
+          },
+          2
+        ),
+        await enviarNotificacion(
+          {
+            titulo: "Reserva Creada Correctamente",
+            reserva_id: result.reserva_id,
+            fecha_reserva: req.body.fecha_reserva,
+            cliente: `${req.user.usuario.nombre} ${req.user.usuario.apellido}`,
+            salon: reserva.salon_titulo,
+            turno: `${reserva.hora_desde} - ${reserva.hora_hasta}`,
+            importe_total: reserva.importe_total,
+            destinatario: [destinatarioCliente],
+          },
+          5
+        ),
+      ];
+
+      const [notificacionAdministrador, notificacionCliente] =
+        await Promise.all(promesasNotificaciones);
+
+      if (!notificacionAdministrador?.ok && !notificacionCliente?.ok) {
+        return res
+          .status(500)
+          .json(mensajeError500("No se pudieron enviar las notificaciones"));
+      }
 
       return res.status(201).json({
         estado: "success",
