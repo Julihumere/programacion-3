@@ -22,8 +22,12 @@ export default class Servicios {
 
   crear = async (servicio) => {
     const sql =
-      "INSERT INTO servicios (descripcion, importe, activo) VALUES (?, ?)";
-    const params = [servicio.descripcion, servicio.importe];
+      "INSERT INTO servicios (descripcion, importe, activo) VALUES (?, ?, ?)";
+    const params = [
+      servicio.descripcion,
+      servicio.importe,
+      servicio.activo ?? 1,
+    ];
 
     const [result] = await conexion.execute(sql, params);
 

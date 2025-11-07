@@ -1,3 +1,10 @@
+import nodemailer from "nodemailer";
+import { readFile } from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+import Handlebars from "handlebars";
+import { emails } from "../constants/emails.js";
+
 export default class NotificacionesService {
   enviarCorreo = async (notificacion, idPlantilla) => {
     const __filename = fileURLToPath(import.meta.url);

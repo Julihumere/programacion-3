@@ -1,14 +1,17 @@
 import ServiciosService from "../services/servicios.service.js";
-import { enviarNotificacion } from "../utils/envioNotificacion.js";
+import NotificacionesService from "../services/notificaciones.service.js";
 import {
   mensajeError500,
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
+import UsuariosService from "../services/usuarios.service.js";
 
 export default class ServiciosController {
   constructor() {
     this.serviciosService = new ServiciosService();
+    this.notificacionesService = new NotificacionesService();
+    this.usuariosService = new UsuariosService();
   }
 
   listarServicios = async (req, res) => {
@@ -57,19 +60,48 @@ export default class ServiciosController {
           .json(mensajeError400("No se pudo crear el servicio"));
       }
 
-      await enviarNotificacion(
-        {
-          titulo: `Nuevo Servicio: ${servicio.descripcion}`,
-          importe: servicio.importe,
-          destinatario: process.env.EMAIL_DESTINATARIO,
-        },
-        2
+      const obtenerEmailsAdministradores =
+        await this.usuariosService.obtenerEmailsAdministradores();
+
+      if (!obtenerEmailsAdministradores) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontraron administradores"));
+      }
+
+      const nuevoServicio = await this.serviciosService.obtenerServicio(
+        servicio.insertId
       );
+      if (!nuevoServicio) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo obtener el nuevo servicio"));
+      }
+
+      const notificacionAdministrador =
+        await this.notificacionesService.enviarCorreo(
+          {
+            titulo: `Nuevo Servicio: ${nuevoServicio.descripcion}`,
+            importe: nuevoServicio.importe,
+            destinatario: obtenerEmailsAdministradores,
+          },
+          3
+        );
+
+      if (!notificacionAdministrador?.ok) {
+        return res
+          .status(500)
+          .json(
+            mensajeError500(
+              "No se pudo enviar la notificación al administrador"
+            )
+          );
+      }
 
       return res.status(201).json({
         estado: "success",
         mensaje: "Servicio creado correctamente",
-        servicio,
+        servicio: nuevoServicio,
       });
     } catch (error) {
       return res.status(500).json(mensajeError500(error));

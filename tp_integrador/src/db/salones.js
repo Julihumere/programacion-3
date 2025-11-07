@@ -20,13 +20,15 @@ export default class Salones {
   };
 
   crear = async (salon) => {
+    console.log(salon);
+
     const sql =
       "INSERT INTO salones (titulo, direccion, latitud, longitud, capacidad, importe, activo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     const params = [
       salon.titulo,
       salon.direccion,
-      salon.latitud,
-      salon.longitud,
+      salon.latitud ?? null,
+      salon.longitud ?? null,
       salon.capacidad,
       salon.importe,
       salon.activo ?? 1,

@@ -22,21 +22,6 @@ export default class SalonesService {
 
     apicache.clear();
 
-    const notificacion = await this.notificacionesService.enviarCorreo(
-      {
-        titulo: `Nuevo Salón de Fiestas: ${salon.titulo}`,
-        direccion: salon.direccion,
-        latitud: salon.latitud,
-        longitud: salon.longitud,
-        capacidad: salon.capacidad,
-        importe: salon.importe,
-        destinatario: process.env.EMAIL_DESTINATARIO,
-      },
-      1
-    );
-
-    if (!notificacion.ok) return null;
-
     return nuevoSalon;
   };
 
