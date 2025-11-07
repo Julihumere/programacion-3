@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Autenticación
+ *   description: Endpoints para registro e inicio de sesión
+ */
+
+/**
+ * @swagger
  * /auth/registrar:
  *   post:
  *     summary: Registrar un nuevo usuario

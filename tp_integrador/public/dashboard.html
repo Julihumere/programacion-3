@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Trampolín Park</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Dashboard de Reservas</h1>
+            <p class="subtitle">Trampolín Park - Estadísticas</p>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="salonFilter">Filtrar por Salón:</label>
+                <select id="salonFilter">
+                    <option value="">Todos los salones</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="clienteFilter">Filtrar por Cliente:</label>
+                <select id="clienteFilter">
+                    <option value="">Todos los clientes</option>
+                </select>
+            </div>
+            <button id="btnRefresh" class="btn-refresh">🔄 Actualizar</button>
+            <button id="btnDownloadCSV" class="btn-download">📥 Descargar CSV</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-info">
+                    <h3 id="totalReservas">0</h3>
+                    <p>Total Reservas</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🎉</div>
+                <div class="stat-info">
+                    <h3 id="totalServicios">$0.00</h3>
+                    <p>Total Servicios</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🏢</div>
+                <div class="stat-info">
+                    <h3 id="totalSalones">$0.00</h3>
+                    <p>Total Salones</p>
+                </div>
+            </div>
+
+            <div class="stat-card highlight">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <h3 id="totalGeneral">$0.00</h3>
+                    <p>Total General</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h2>Últimas Reservas</h2>
+            <div class="table-wrapper">
+                <table id="reservasTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Temática</th>
+                            <th>Salón</th>
+                            <th>Turno</th>
+                            <th>Cliente</th>
+                            <th>Email</th>
+                            <th>Servicios</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="9" class="loading">Cargando datos...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <p>⚠️ Error al cargar los datos. Por favor, verifique que esté autenticado.</p>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
