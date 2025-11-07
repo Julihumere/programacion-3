@@ -1,7 +1,7 @@
 import passport from "passport";
 
 const validarSesion = (req, res, next) => {
-  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+  passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err) {
       return res.status(500).json({
         status: "error",
