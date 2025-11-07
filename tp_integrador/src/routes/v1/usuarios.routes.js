@@ -40,4 +40,11 @@ router.patch(
   usuariosController.actualizarUsuario
 );
 
+router.delete(
+  "/:id",
+  validarSesion,
+  autorizarUsuarios([1]),
+  usuariosController.eliminarUsuario
+);
+
 export { router };
