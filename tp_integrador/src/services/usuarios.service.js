@@ -30,4 +30,8 @@ export default class UsuariosService {
   obtenerEmailsAdministradores = async () => {
     return await this.usuarios.buscarEmailsAdministradores();
   };
+
+  obtenerUsuarioEliminado = async (id) => {
+    return await this.usuarios.buscarEliminado(id);
+  };
 }

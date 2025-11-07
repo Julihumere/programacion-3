@@ -84,16 +84,21 @@ export default class UsuariosController {
   eliminarUsuario = async (req, res) => {
     try {
       const { id } = req.params;
+
       const usuario = await this.usuariosService.eliminarUsuario(id);
       if (!usuario) {
         return res
           .status(400)
           .json(mensajeError400("No se pudo eliminar el usuario"));
       }
+
+      const usuarioEliminardo =
+        await this.usuariosService.obtenerUsuarioEliminado(id);
+
       return res.status(200).json({
         estado: "success",
         mensaje: "Usuario eliminado correctamente",
-        usuario,
+        usuario: usuarioEliminardo,
       });
     } catch (error) {
       return res.status(500).json(mensajeError500(error));

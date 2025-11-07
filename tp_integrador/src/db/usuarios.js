@@ -58,4 +58,13 @@ export default class Usuarios {
     if (administradores.length === 0) return [];
     return administradores.map((administrador) => administrador.nombre_usuario);
   };
+
+  buscarEliminado = async (id) => {
+    const sql = "SELECT * FROM usuarios WHERE usuario_id = ? AND activo = 0";
+    const [usuario] = await conexion.execute(sql, [id]);
+
+    if (usuario.length === 0) return null;
+
+    return usuario[0];
+  };
 }
