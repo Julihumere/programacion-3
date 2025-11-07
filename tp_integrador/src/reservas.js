@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import expressHandlebars from "express-handlebars";
 import path from "path";
+import { fileURLToPath } from "url";
 import passport from "./config/passport.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
@@ -14,6 +15,9 @@ import { router as v1TurnosRouter } from "./routes/v1/turnos.routes.js";
 import { router as v1ReservasRouter } from "./routes/v1/reservas.routes.js";
 import { router as v1AuthRouter } from "./routes/v1/auth.routes.js";
 import { router as v1InformesRouter } from "./routes/v1/informes.routes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const hbs = expressHandlebars.create({
   defaultLayout: "main",
@@ -36,10 +40,10 @@ app.use(passport.initialize());
 // Configuración de Handlebars
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
-app.set("views", path.join(path.dirname(""), "views"));
+app.set("views", path.join(__dirname, "..", "views"));
 
 // Configuracion elementos estaticos
-app.use(express.static(path.join(path.dirname(""), "..", "public")));
+app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.get("/health", (_req, res) => {
   res.send({ ok: true });
