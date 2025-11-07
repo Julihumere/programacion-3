@@ -14,4 +14,11 @@ router.get(
   informesController.obtenerInformeReservas
 );
 
+router.get(
+  "/descargar",
+  validarSesion,
+  esAdmin,
+  informesController.descargarInformePDF
+);
+
 export { router };

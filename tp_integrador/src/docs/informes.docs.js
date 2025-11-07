@@ -156,3 +156,73 @@
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
+
+/**
+ * @swagger
+ * /informes/descargar:
+ *   get:
+ *     summary: Descargar informe de reservas en formato CSV
+ *     description: Genera y descarga un archivo CSV con el informe detallado de reservas. El CSV incluye todas las columnas con los datos completos de las reservas filtradas y totales calculados. Compatible con Excel y otras hojas de cálculo. Solo accesible para administradores.
+ *     tags: [Informes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: salon_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: ID del salón para filtrar el informe (opcional)
+ *         example: 1
+ *       - in: query
+ *         name: usuario_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: ID del usuario/cliente para filtrar el informe (opcional)
+ *         example: 5
+ *     responses:
+ *       200:
+ *         description: CSV generado y listo para descargar
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *         headers:
+ *           Content-Disposition:
+ *             description: Nombre del archivo a descargar
+ *             schema:
+ *               type: string
+ *               example: 'attachment; filename="informe_reservas_2025-01-15.csv"'
+ *           Content-Type:
+ *             description: Tipo MIME del archivo
+ *             schema:
+ *               type: string
+ *               example: text/csv; charset=utf-8
+ *       401:
+ *         description: No autenticado - Token inválido o expirado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       403:
+ *         description: No autorizado - Solo administradores pueden descargar informes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: No se encontraron reservas para generar el informe
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error interno del servidor al generar el CSV
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
