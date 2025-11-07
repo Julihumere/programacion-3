@@ -78,6 +78,8 @@ BEGIN
         t.hora_desde,
         t.hora_hasta,
         u.usuario_id,
+        u.nombre,
+        u.apellido,
         u.nombre_usuario,
         u.celular,
         u.tipo_usuario
