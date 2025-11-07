@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Reservas
+ *   description: Endpoints para gestionar reservas de salones
+ */
+
+/**
+ * @swagger
  * /reservas:
  *   get:
  *     summary: Listar todas las reservas (Solo Empleados y Administradores)

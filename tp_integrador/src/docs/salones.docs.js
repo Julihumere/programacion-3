@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Salones
+ *   description: Endpoints para gestionar salones de fiestas
+ */
+
+/**
+ * @swagger
  * /salones:
  *   get:
  *     summary: Listar todos los salones
@@ -12,9 +19,15 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Salon'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Salon'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       500:
@@ -42,7 +55,13 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Salon'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   $ref: '#/components/schemas/Salon'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       404:
@@ -71,7 +90,16 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Salon'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 mensaje:
+ *                   type: string
+ *                   example: Salón creado correctamente
+ *                 data:
+ *                   $ref: '#/components/schemas/Salon'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       401:
