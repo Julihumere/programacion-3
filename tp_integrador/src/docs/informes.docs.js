@@ -9,8 +9,8 @@
  * @swagger
  * /informes/reservas:
  *   get:
- *     summary: Obtener informe completo de reservas
- *     description: Genera un informe detallado de reservas con información de salones, turnos, clientes y servicios contratados. Solo accesible para empleados y administradores.
+ *     summary: Obtener informe completo de reservas (Solo Administradores)
+ *     description: Genera un informe detallado de reservas con información de salones, turnos, clientes y servicios contratados. Solo accesible para administradores.
  *     tags: [Informes]
  *     security:
  *       - bearerAuth: []
@@ -161,7 +161,7 @@
  * @swagger
  * /informes/descargar:
  *   get:
- *     summary: Descargar informe de reservas en formato CSV
+ *     summary: Descargar informe de reservas en formato CSV (Solo Administradores)
  *     description: Genera y descarga un archivo CSV con el informe detallado de reservas. El CSV incluye todas las columnas con los datos completos de las reservas filtradas y totales calculados. Compatible con Excel y otras hojas de cálculo. Solo accesible para administradores.
  *     tags: [Informes]
  *     security:

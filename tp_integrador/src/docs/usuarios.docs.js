@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Usuarios
+ *   description: Endpoints para gestionar usuarios del sistema
+ */
+
+/**
+ * @swagger
  * /usuarios/clientes:
  *   get:
  *     summary: Listar todos los clientes (Solo Administradores y Empleados)
@@ -12,9 +19,15 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Usuario'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Usuario'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       403:
@@ -37,9 +50,15 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Usuario'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Usuario'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       403:
@@ -69,7 +88,13 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Usuario'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   $ref: '#/components/schemas/Usuario'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       403:

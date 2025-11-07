@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Servicios
+ *   description: Endpoints para gestionar servicios adicionales
+ */
+
+/**
+ * @swagger
  * /servicios:
  *   get:
  *     summary: Listar todos los servicios
@@ -12,9 +19,15 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Servicio'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Servicio'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       500:
@@ -42,7 +55,13 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Servicio'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   $ref: '#/components/schemas/Servicio'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       404:
@@ -71,7 +90,16 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Servicio'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 mensaje:
+ *                   type: string
+ *                   example: Servicio creado correctamente
+ *                 data:
+ *                   $ref: '#/components/schemas/Servicio'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       401:

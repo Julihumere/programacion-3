@@ -1,5 +1,12 @@
 /**
  * @swagger
+ * tags:
+ *   name: Turnos
+ *   description: Endpoints para gestionar turnos de reservas
+ */
+
+/**
+ * @swagger
  * /turnos:
  *   get:
  *     summary: Listar todos los turnos
@@ -12,9 +19,15 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Turno'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Turno'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       500:
@@ -42,7 +55,13 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Turno'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   $ref: '#/components/schemas/Turno'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       404:
@@ -71,7 +90,16 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Turno'
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: string
+ *                   example: success
+ *                 mensaje:
+ *                   type: string
+ *                   example: Turno creado correctamente
+ *                 data:
+ *                   $ref: '#/components/schemas/Turno'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       401:
