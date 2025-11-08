@@ -108,10 +108,10 @@
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
- *             required: ["fecha_reserva", "salon_id", "turno_id"]
+ *             required: ["fecha_reserva", "salon_id", "turno_id", "usuario_id"]
  *             properties:
  *               fecha_reserva:
  *                 type: string
@@ -131,8 +131,43 @@
  *               usuario_id:
  *                 type: integer
  *                 minimum: 1
- *                 description: ID del usuario (solo para administradores, clientes lo tienen automático)
- *                 example: 5
+ *                 description: ID del usuario que hace la reserva (requerido)
+ *                 example: 3
+ *               tematica:
+ *                 type: string
+ *                 description: Temática de la fiesta (opcional)
+ *                 example: "Superhéroes"
+ *               servicios:
+ *                 type: array
+ *                 description: Array de IDs de servicios adicionales (opcional)
+ *                 items:
+ *                   type: integer
+ *                 example: [1, 2]
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required: ["fecha_reserva", "salon_id", "turno_id", "usuario_id"]
+ *             properties:
+ *               fecha_reserva:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de la reserva (YYYY-MM-DD)
+ *                 example: "2025-12-25"
+ *               salon_id:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: ID del salón a reservar
+ *                 example: 1
+ *               turno_id:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: ID del turno a reservar
+ *                 example: 2
+ *               usuario_id:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: ID del usuario que hace la reserva (requerido)
+ *                 example: 3
  *               tematica:
  *                 type: string
  *                 description: Temática de la fiesta (opcional)
@@ -140,11 +175,11 @@
  *               foto_cumpleaniero:
  *                 type: string
  *                 format: binary
- *                 description: Foto del cumpleañero (opcional)
+ *                 description: Foto del cumpleañero (opcional, solo con multipart/form-data)
  *               servicios:
  *                 type: string
- *                 description: Array de IDs de servicios adicionales en formato JSON (opcional)
- *                 example: "[2, 3, 5]"
+ *                 description: Array de IDs de servicios en formato JSON string (opcional)
+ *                 example: "[1, 2]"
  *     responses:
  *       201:
  *         description: Reserva creada exitosamente
