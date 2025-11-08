@@ -5,10 +5,14 @@ import {
   mensajeError404,
   mensajeError400,
 } from "../utils/mensajes.js";
+import NotificacionesService from "../services/notificaciones.service.js";
+import UsuariosService from "../services/usuarios.service.js";
 
 export default class TurnosController {
   constructor() {
     this.turnosService = new TurnosService();
+    this.notificacionesService = new NotificacionesService();
+    this.usuariosService = new UsuariosService();
   }
 
   listarTurnos = async (req, res) => {
@@ -47,20 +51,47 @@ export default class TurnosController {
           .json(mensajeError400("No se pudo crear el turno"));
       }
 
-      await enviarNotificacion(
-        {
-          titulo: `Nuevo Turno: ${turno.orden}`,
-          hora_desde: turno.hora_desde,
-          hora_hasta: turno.hora_hasta,
-          destinatario: process.env.EMAIL_DESTINATARIO,
-        },
-        3
-      );
+      const obtenerEmailsAdministradores =
+        await this.usuariosService.obtenerEmailsAdministradores();
+      if (!obtenerEmailsAdministradores) {
+        return res
+          .status(404)
+          .json(mensajeError404("No se encontraron administradores"));
+      }
+
+      const nuevoTurno = await this.turnosService.obtenerTurno(turno.insertId);
+      if (!nuevoTurno) {
+        return res
+          .status(400)
+          .json(mensajeError400("No se pudo obtener el nuevo turno"));
+      }
+
+      const notificacionAdministrador =
+        await this.notificacionesService.enviarCorreo(
+          {
+            titulo: `Nuevo Turno: ${nuevoTurno.orden}`,
+            orden: nuevoTurno.orden,
+            hora_desde: nuevoTurno.hora_desde,
+            hora_hasta: nuevoTurno.hora_hasta,
+            destinatario: obtenerEmailsAdministradores,
+          },
+          4
+        );
+
+      if (!notificacionAdministrador?.ok) {
+        return res
+          .status(500)
+          .json(
+            mensajeError500(
+              "No se pudo enviar la notificación al administrador"
+            )
+          );
+      }
 
       return res.status(201).json({
         estado: "success",
         mensaje: "Turno creado correctamente",
-        turno,
+        turno: nuevoTurno,
       });
     } catch (error) {
       return res.status(500).json(mensajeError500(error));
