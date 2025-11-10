@@ -1,5 +1,4 @@
 import Turnos from "../db/turnos.js";
-import apicache from "apicache";
 
 export default class TurnosService {
   constructor() {
@@ -18,8 +17,6 @@ export default class TurnosService {
     const nuevoTurno = await this.turnos.crear(turno);
     if (!nuevoTurno) return null;
 
-    apicache.clear();
-
     return nuevoTurno;
   };
 
@@ -27,16 +24,12 @@ export default class TurnosService {
     const turnoExistente = await this.turnos.buscarPorId(turno_id);
     if (!turnoExistente) return null;
 
-    apicache.clear();
-
     return await this.turnos.actualizar(turno_id, turno);
   };
 
   eliminarTurno = async (turno_id) => {
     const turno = await this.turnos.eliminar(turno_id);
     if (!turno) return null;
-
-    apicache.clear();
 
     return turno;
   };

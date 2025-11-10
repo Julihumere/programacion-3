@@ -1,5 +1,4 @@
 import Servicios from "../db/servicios.js";
-import apicache from "apicache";
 
 export default class ServiciosService {
   constructor() {
@@ -18,8 +17,6 @@ export default class ServiciosService {
     const nuevoServicio = await this.servicios.crear(servicio);
     if (!nuevoServicio) return null;
 
-    apicache.clear();
-
     return nuevoServicio;
   };
 
@@ -27,16 +24,12 @@ export default class ServiciosService {
     const servicioExistente = await this.servicios.buscarPorId(servicio_id);
     if (!servicioExistente) return null;
 
-    apicache.clear();
-
     return await this.servicios.actualizar(servicio_id, servicio);
   };
 
   eliminarServicio = async (servicio_id) => {
     const servicio = await this.servicios.eliminar(servicio_id);
     if (!servicio) return null;
-
-    apicache.clear();
 
     return servicio;
   };

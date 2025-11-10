@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 import fs from "fs";
+import { guardarCache, limpiarCache } from "./config/cache.js";
 
 import { router as v1UsuariosRouter } from "./routes/v1/usuarios.routes.js";
 import { router as v1SalonesRouter } from "./routes/v1/salones.routes.js";
@@ -54,6 +55,10 @@ app.get("/health", (_req, res) => {
 
 // Documentación Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Aplicar caché y middleware de limpieza para las rutas de la API
+app.use("/api/v1", guardarCache);
+app.use("/api/v1", limpiarCache);
 
 // Rutas v1
 app.use("/api/v1/usuarios", v1UsuariosRouter);
